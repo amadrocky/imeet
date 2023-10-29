@@ -1,0 +1,83 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Imeet | Take the control !
+{% endblock %}
+
+{% block body %}
+  <div class="landing-top"></div>
+  <div class="landing-intro my-5">
+    <h1>
+      take the control
+    </h1>
+    <div class="row justify-content-around">
+      <div class="col-12 col-md-4 text-center d-flex justify-content-center align-items-center">
+        <div>
+          <h3>
+            Short title for introduction
+          </h3>
+          <p class="mb-4">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem
+            voluptates adipisci dolorum ipsam officiis error dolore odit itaque,
+            necessitatibus beatae eius harum iste.
+          </p>
+          <a href="" class="btn btn-outline-danger">Je choisis ma formule</a>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 text-center">
+        <img src="{{ asset('build/images/b73e62da299075cc73f9c02dc081804a.png' ) }}" class="landing-intro-img" alt="image" />
+      </div>
+    </div>
+  </div>
+  <div class="fixed-background"></div>
+  <div class="landing-products">
+  <h2>Our latest products</h2>
+    <div class="row justify-content-center">
+      <div class="col">
+        {% include './elements/productCard.html.twig' %}
+      </div>
+      <div class="col">
+        {% include './elements/productCard.html.twig' %}
+      </div>
+      <div class="col">
+        {% include './elements/productCard.html.twig' %}
+      </div>
+    </div>
+  </div>
+  <div class="row landing-prevew_one">
+    <div class="col-6 image-zone"></div>
+    <div class="col-6 text-zone text-center d-flex justify-content-center align-items-center">
+      <div>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+          nobis at blanditiis voluptate ipsum dicta, consequuntur eveniet
+          eligendi vero expedita.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row landing-prevew_two">
+    <div class="col-6 text-zone text-center d-flex justify-content-center align-items-center">
+      <div>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+          nobis at blanditiis voluptate ipsum dicta, consequuntur eveniet
+          eligendi vero expedita.
+        </p>
+      </div>
+    </div>
+    <div class="col-6 image-zone"></div>
+  </div>
+  <div class="row landing-prevew_three">
+    <div class="col-6 image-zone"></div>
+    <div class="col-6 text-zone text-center d-flex justify-content-center align-items-center">
+      <div>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+          nobis at blanditiis voluptate ipsum dicta, consequuntur eveniet
+          eligendi vero expedita.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

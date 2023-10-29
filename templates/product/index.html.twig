@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Products
+{% endblock %}
+
+{% block body %}
+  <div class="product-banner"></div>
+  {% include './elements/breadcrumb2Lev.html.twig' with {'lev2Name': 'Produits'} %}
+  <div class="product-offer">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-4">
+          {% include './product/verticalProduct.html.twig' %}
+        </div>
+        <div class="col-12 col-md-4">
+          {% include './product/verticalProduct.html.twig' %}
+        </div>
+        <div class="col-12 col-md-4">
+          {% include './product/verticalProduct.html.twig' %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

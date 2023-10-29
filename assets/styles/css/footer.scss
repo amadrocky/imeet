@@ -1,0 +1,29 @@
+.footer {
+    padding: 100px 60px;
+    background-color: #000;
+    .footer-logo {
+        text-align: center;
+        img {
+            width: 5vw;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    }
+    h3 {
+        font-family: 'Anton', sans-serif;
+        font-size: 3vw;
+        color: white;
+    }
+}
+
+.pre-footer {
+    font-family: 'Anton', sans-serif;
+    background: linear-gradient(to right, #0a1c3c, #080d16);
+    padding: 50px 0;
+    text-align: center;
+    color: #fff;
+    margin: 0;
+    h5 {
+        margin: 0;
+    }
+}

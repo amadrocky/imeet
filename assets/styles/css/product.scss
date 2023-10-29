@@ -1,0 +1,79 @@
+.card {
+    margin: 0 auto;
+    float: none;
+    margin-bottom: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.6);
+}
+
+.card-top {
+    background-color: $red;
+    padding: 30px;
+    border-radius: 0 0 50% 0;
+    text-align: center;
+    span {
+        font-family: 'Anton', sans-serif;
+        font-size: 2vw;
+        color: white;
+    }
+}
+
+.card-title {
+    text-align: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 5vw;
+    sup {
+        font-size: 2vw;
+    }
+}
+
+.product-details {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.product-banner {
+    height: 300px;
+    background-image: url(../../static/images/music-7238254_1280.jpg);
+    background-size: cover;
+    background-position-y: 47%;
+}
+
+.product-offer {
+    padding: 50px 0;
+    .product-block {
+        border: 1px solid $red;
+        padding: 30px;
+        .product-block-left {
+            text-align: center;
+            h2 {
+                border-bottom: 1px solid $red;
+            }
+            p {
+                font-family: 'Quicksand', sans-serif;
+            }
+        }
+        .product-block-right {
+            text-align: center;
+            h5 {
+                font-family: 'Anton', sans-serif;
+                font-size: 5vw;
+            }
+            ul {
+                padding: 20px;
+            }
+            li {
+                list-style-type: none;
+                font-size: 20px;
+                font-family: 'Quicksand', sans-serif;
+            }
+            .product-price {
+                font-family: 'Anton', sans-serif;
+                font-size: 7vw;
+                margin-bottom: 20px;
+                sup {
+                    font-size: 3vw;
+                }
+            }
+        }
+    }
+}

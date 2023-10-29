@@ -1,0 +1,45 @@
+.landing-top {
+    height: 800px;
+    background-image: url(../../static/images/music-7238254_1280.jpg);
+    background-size: cover;
+}
+
+.landing-intro-img {
+    max-height: 500px;
+    width: auto;
+}
+
+.fixed-background {
+    height: 400px;
+    background-image: url(../../static/images/audience-1850119_1280.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.landing-products {
+    padding: 100px 0;
+}
+
+.landing-prevew {
+    &_one {
+        .image-zone {
+            background-image: url(../../static/images/people-2589091_1280.jpg);
+            background-size: cover;
+            height: 500px;
+        }
+    }
+    &_two {
+        .image-zone {
+            background-image: url(../../static/images/cupcakes-380178_1280.jpg);
+            background-size: cover;
+            height: 500px;
+        }
+    }
+    &_three {
+        .image-zone {
+            background-image: url(../../static/images/music-7238254_1280.jpg);
+            background-size: cover;
+            height: 500px;
+        }
+    }
+}
