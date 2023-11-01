@@ -1,0 +1,62 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Order
+{% endblock %}
+
+{% block body %}
+  <div class="order-product container">
+    {% include './elements/stepper.html.twig' with {'step': 2} %}
+    <div class="order-recap">
+      <div class="row">
+        <div class="col-9">
+          <h4>
+            Starter
+          </h4>
+          <ul>
+            <li>10 tickets</li>
+            <li>E-tickets (QR code)</li>
+            <li>Platforme d'identification</li>
+            <li>Accès au service statistiques</li>
+          </ul>
+        </div>
+        <div class="col-3">
+          <p class="text-end">
+            18.90 €
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-9">
+          <p class="text-end">
+            TVA
+          </p>
+        </div>
+        <div class="col-3">
+          <p class="text-end">
+            2.20 €
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-9">
+          <p class="text-end fw-bold">
+            TOTAL
+          </p>
+        </div>
+        <div class="col-3">
+          <p class="text-end fw-bold">
+            21.00 €
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="text-end">
+      <a href=""
+        class="btn btn-outline-danger btn-lg">
+        Étape suivante
+      </a>
+    </div>
+  </div>
+{% endblock %}
