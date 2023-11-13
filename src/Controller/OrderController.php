@@ -10,10 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderController extends AbstractController
 {
     #[Route('/', name: '_recap')]
-    public function index(): Response
+    public function index(int $quantity = 1): Response
     {
         return $this->render('order/index.html.twig', [
-            
+            'quantity' => $quantity
         ]);
     }
 }
