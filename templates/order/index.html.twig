@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-  <div class="order-product container">
+  <div {{ stimulus_controller('order') }} class="order-product container">
     {% include './elements/stepper.html.twig' with {
       step: 2
     } %}
@@ -16,16 +16,17 @@
             Starter
           </h4>
           <ul>
-            <li>10 tickets</li>
+            <li><span data-order-target="tickets">10</span> tickets</li>
             <li>E-tickets (QR code)</li>
             <li>Platforme d'identification</li>
             <li>Accès au service statistiques</li>
           </ul>
         </div>
-        <div class="col-3">
-          <p class="text-end">
-            18.80 €
+        <div class="col-3 d-flex justify-content-end">
+          <p class="me-2" data-order-target="productTotal">
+            18.80
           </p>
+          <p>€</p>
         </div>
       </div>
       <div class="row">
@@ -34,9 +35,9 @@
             Quantité
           </h5>
           <div>
-            <span class="minus"><button class="btn btn-danger">-</button></span>
-            <span class="num mx-2">{{ quantity }}</span>
-            <span class="plus"><button class="btn btn-danger">+</button></span>
+            <span class="minus" data-action="click->order#decrement"><button class="btn btn-danger">-</button></span>
+            <span class="num mx-2" data-order-target="quantity">1</span>
+            <span class="plus" data-action="click->order#increment"><button class="btn btn-danger">+</button></span>
           </div>
         </div>
       </div>
@@ -47,10 +48,11 @@
             TOTAL
           </p>
         </div>
-        <div class="col-3">
-          <p class="text-end fw-bold">
-            18.80 €
+        <div class="col-3 d-flex justify-content-end">
+          <p class="fw-bold me-2" data-order-target="orderTotal">
+            18.80
           </p>
+          <p class="fw-bold">€</p>
         </div>
       </div>
     </div>
