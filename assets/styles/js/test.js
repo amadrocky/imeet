@@ -1,0 +1,1 @@
+document.getElementById('test').classList.add('bg-red');

@@ -1,0 +1,38 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Créer mon comte
+{% endblock %}
+
+{% block body %}
+	<div class="login">
+		<div class="container row justify-content-center">
+			<div class="login-form col-12 col-md-8">
+				<h3>Créer mon comte</h3>
+				{{ form_start(registrationForm) }}
+				{{ form_errors(registrationForm) }}
+
+				<div class="row justify-content-center">
+					<div class="col-12 col-md-8">
+						{{ form_widget(registrationForm.lastname) }}
+						{{ form_widget(registrationForm.firstname) }}
+						{{ form_widget(registrationForm.email) }}
+						{{ form_widget(registrationForm.password) }}
+						<div class="mb-3">
+							{# checkbox #}
+							<small>J'ai lu et j'accepte les <a href="">conditions générales d'utilisation</a>.</small>
+						</div>
+
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
+
+						<button type="submit" class="btn btn-danger">Valider</button>
+                        <div class="mt-3">
+                            <a href="{{ path('app_login') }}">Déjà inscrit ? J'accède à mon compte</a>
+                        </div>
+					</div>
+				</div>
+				{{ form_end(registrationForm) }}
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
