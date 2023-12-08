@@ -1,0 +1,28 @@
+name: imeet
+recipe: symfony
+config:
+  php: 8.1
+  via: apache:2.4
+  webroot: public
+  mysql: 5.7
+services:
+  database:
+    portforward: false
+    creds:
+      user: amad
+      password: amad
+      database: imeet
+  node:
+    type: node
+    build:
+      - npm install
+      - yarn
+  phpmyadmin:
+    type: phpmyadmin:5.0
+    hosts:
+      - database
+tooling:
+  yarn:
+    service: node
+  npm:
+    service: node
