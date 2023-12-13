@@ -1,28 +1,55 @@
 name: imeet
+excludes:
+    - var
+    - node_modules
+    - vendor
 recipe: symfony
 config:
-  php: 8.1
-  via: apache:2.4
-  webroot: public
-  mysql: 5.7
+    php: 8.1
+    via: nginx
+    webroot: public
+    mysql: 5.7
+
+proxy:
+    mailhog:
+        - mailhog.imeet.lndo.site
 services:
-  database:
-    portforward: false
-    creds:
-      user: amad
-      password: amad
-      database: imeet
-  node:
-    type: node
-    build:
-      - npm install
-      - yarn
-  phpmyadmin:
-    type: phpmyadmin:5.0
-    hosts:
-      - database
+    appserver:
+        xdebug: true
+        overrides:
+            environment:
+                PHP_IDE_CONFIG: "serverName=appserver"
+                MAILER_URL: 'mailhog:1025'
+    
+    database:
+        portforward: 3306
+        creds:
+            user: amad
+            password: amad
+            database: imeet
+    node:
+        type: node
+        build:
+            - npm install
+    mailhog:
+        type: mailhog
+        portforward: true
+        hogfrom:
+            - appserver
+    phpmyadmin:
+        type: phpmyadmin:5.0
+        hosts:
+            - database
 tooling:
-  yarn:
-    service: node
-  npm:
-    service: node
+    sf:
+        service: appserver
+        description: Run Symfony commands
+        cmd:
+            - bin/console
+    cc:
+        service: appserver
+        description: Run Symfony commands
+        cmd:
+            - "XDEBUG_MODE=off bin/console cache:clear && XDEBUG_MODE=on"
+    npm:
+        service: node
