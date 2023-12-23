@@ -21,8 +21,7 @@ export default class extends Controller {
 
     increment() {
         this.count++;
-        this.quantityTarget.innerText = this.count;
-        this.ticketsTarget.innerText = this.defaultquantity * this.count;
+        this.updateQuantities();
         this.updateTotal();
     }
 
