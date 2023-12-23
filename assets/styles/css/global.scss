@@ -7,7 +7,7 @@ h1 {
 
 h2 {
     font-family: 'Anton', sans-serif;
-    font-size: 5vw;
+    font-size: 4vw;
     text-align: center;
     margin-bottom: 50px;
     padding-bottom: 10px;
@@ -15,17 +15,19 @@ h2 {
 
 h3 {
     font-family: 'Anton', sans-serif;
-    font-size: 4vw;
+    font-size: 3vw;
     text-align: center;
     margin-bottom: 30px;
 }
 
 p {
     font-family: 'Quicksand', sans-serif;
-    font-size: 2vw;
+    font-size: 1.5vw;
 }
 
-a, input, small {
+a,
+input,
+small {
     font-family: 'Quicksand', sans-serif;
 }
 
@@ -42,6 +44,7 @@ a, input, small {
 
 .breadcrumb {
     padding-top: 30px;
+
     a {
         color: $red;
         text-decoration: none;

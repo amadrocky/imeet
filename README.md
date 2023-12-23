@@ -12,11 +12,12 @@ Please also verify you meet the requirements needed to run our Docker engine bac
 1. Run `lando start` to build fresh images and start the project
 2. Run `lando composer install` to install all dependencies
 3. Run `lando npm install` to install node packages
-4. Run `lando sf doctrine:migrations:migrate` to update migrations (the command `lando sf` replace `php bin/console`)
+4. Run `lando npm run dev` to compile assets (use `lando npm run watch` if you need watch mode)
+5. Run `lando sf doctrine:migrations:migrate` to update migrations (the command `lando sf` replace `php bin/console`)
 
 ## Containers URLS
 Once the project is started, you have many available endpoints.
 
 APPSERVER NGINX : `http://imeet.lndo.site/`  
-MAILHOG : `http://mailhog.imeet.lndo.site/`  
-PHPMYADMIN : `http://localhost:32918`
+PHPMYADMIN : `http://localhost:32918`  
+MAILHOG : `http://mailhog.imeet.lndo.site/` 
