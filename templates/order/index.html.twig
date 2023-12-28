@@ -1,30 +1,28 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}
-  Order
+  Imeet | Commande {{ product.name }}
 {% endblock %}
 
 {% block body %}
   <div {{ stimulus_controller('order') }} class="order-product container">
-    {% include './elements/stepper.html.twig' with {
-      step: 2
-    } %}
+    {% include './elements/stepper.html.twig' with {step: 2} %}
     <div class="order-recap">
       <div class="row">
         <div class="col-9">
           <h4>
-            Starter
+            {{ product.name }}
           </h4>
           <ul>
-            <li><span data-order-target="tickets">10</span> tickets</li>
-            <li>E-tickets (QR code)</li>
-            <li>Platforme d'identification</li>
-            <li>Accès au service statistiques</li>
+            <li><span data-order-target="tickets">{{ product.quantity }}</span> tickets</li>
+              {% for composition in product.compositions %}
+                <li>{{ composition.name }}</li>
+              {% endfor %}
           </ul>
         </div>
         <div class="col-3 d-flex justify-content-end">
           <p class="me-2" data-order-target="productTotal">
-            18.80
+            {{ product.price / 100 }}
           </p>
           <p>€</p>
         </div>
@@ -47,7 +45,7 @@
         </div>
         <div class="col-3 d-flex justify-content-end">
           <p class="fw-bold me-2" data-order-target="orderTotal">
-            18.80
+            {{ product.price / 100 }}
           </p>
           <p class="fw-bold">€</p>
         </div>
