@@ -7,15 +7,15 @@
       {{ (product.price / 100)|round(0, 'floor') }}<sup>€{{ product.price|slice(-2) }}</sup>
     </h5>
     <ul class="product-details">
-      <li><i class="fas fa-circle text-success"></i> {{ product.quantity }} tickets</li>
+      <li><i class="fas fa-circle text-danger"></i> {{ product.quantity }} tickets</li>
         {% for composition in compositions %}
-          <li><i class="fas fa-circle {% if composition in product.compositions %}text-success{% else %}text-danger{% endif %}"></i> {{ composition.name }}</li>
+          <li><i class="fas fa-circle {% if composition in product.compositions %}text-danger{% endif %}"></i> {{ composition.name }}</li>
         {% endfor %}
     </ul>
     <div class="w-100 text-center">
       <a href="{{ path('app_order_recap') }}" class="btn btn-danger btn-lg">Commander</a>
       <div class="mt-2">
-        <a href="{{ path('app_product_show') }}" class="text-danger text-decoration-none">En savoir plus</a>
+        <a href="{{ path('app_product_show', {'slug': product.slug}) }}" class="text-danger text-decoration-none">En savoir plus</a>
       </div>
     </div>
   </div>

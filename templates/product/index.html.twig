@@ -10,15 +10,11 @@
   <div class="product-offer">
     <div class="container">
       <div class="row">
-        <div class="col-12 col-md-4">
-          {% include './elements/verticalProduct.html.twig' %}
-        </div>
-        <div class="col-12 col-md-4">
-          {% include './elements/verticalProduct.html.twig' %}
-        </div>
-        <div class="col-12 col-md-4">
-          {% include './elements/verticalProduct.html.twig' %}
-        </div>
+        {% for product in products %}
+          <div class="col-12 col-md-4">
+            {% include './elements/verticalProduct.html.twig' with {'product': product} %}
+          </div>
+        {% endfor %}
       </div>
     </div>
   </div>
