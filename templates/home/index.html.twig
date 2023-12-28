@@ -31,15 +31,11 @@
   <div class="landing-products">
     <h2>Nos formules</h2>
     <div class="row justify-content-center">
-      <div class="col">
-        {% include './elements/productCard.html.twig' %}
-      </div>
-      <div class="col">
-        {% include './elements/productCard.html.twig' %}
-      </div>
-      <div class="col">
-        {% include './elements/productCard.html.twig' %}
-      </div>
+      {% for product in products %}
+        <div class="col">
+          {% include './elements/productCard.html.twig' with {'product': product} %}
+        </div>
+      {% endfor %}
     </div>
   </div>
   <div class="row landing-prevew_one">

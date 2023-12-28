@@ -29,6 +29,12 @@
 
 .product-details {
     font-family: 'Quicksand', sans-serif;
+    li {
+        list-style-type: none;
+        i {
+            font-size: 10px;
+        }
+    }
 }
 
 .product-banner {
