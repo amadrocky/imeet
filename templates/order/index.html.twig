@@ -6,7 +6,7 @@
 
 {% block body %}
   <div {{ stimulus_controller('order') }} class="order-product container">
-    {% include './elements/stepper.html.twig' with {step: 2} %}
+    {% include './elements/stepper.html.twig' with {step: 1} %}
     <div class="order-recap">
       <div class="row">
         <div class="col-9">
@@ -51,8 +51,9 @@
         </div>
       </div>
     </div>
-    <div class="text-end">
-      <a href="" class="btn btn-outline-danger btn-lg">Étape suivante</a>
-    </div>
+    <form action="{{ path('app_order_address', {'slug': product.slug}) }}" method="get" class="text-end">
+      <input type="hidden" id="formQuantity" name="formQuantity" value="1" />
+      <input type="submit" class="btn btn-outline-danger btn-lg" value="Étape suivante" />
+    </form>
   </div>
 {% endblock %}

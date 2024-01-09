@@ -1,0 +1,88 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Imeet | Commande {{ product.name }}
+{% endblock %}
+
+{% block body %}
+    <div class="order-product container">
+        {% include './elements/stepper.html.twig' with {step: 3} %}
+      <div class="order-recap">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+              <div class="col-12 alert alert-info alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endfor %}
+        <div class="row">
+          <div class="col-9">
+            <h4>
+              {{ product.name }}{% if orderQuantity > 1 %} x{{ orderQuantity }}{% endif %}
+            </h4>
+            <ul>
+              <li><span>{{ product.quantity * orderQuantity }}</span> tickets</li>
+                {% for composition in product.compositions %}
+                  <li>{{ composition.name }}</li>
+                {% endfor %}
+            </ul>
+          </div>
+          <div class="col-3 d-flex justify-content-end fw-bold">
+            <p class="me-2">
+              {{ orderTotal }}
+            </p>
+            <p>€</p>
+          </div>
+        </div>
+        <hr/>
+        <div class="row address-form">
+          <div class="col-6">
+            <h5 class="text-center">Mes informations</h5>
+            <p class="fw-bold">Email :</p>
+            <p>{{ datas['email'] }}</p>
+            <div class="d-flex">
+              <div class="w-50 pe-1">
+                <p class="fw-bold">Nom :</p>
+                <p>{{ datas['lastname'] }}</p>
+              </div>
+              <div class="w-50 ps-1">
+                <p class="fw-bold">Prénom :</p>
+                <p>{{ datas['firstname'] }}</p>
+              </div>
+            </div>
+            <p class="fw-bold">Rue :</p>
+            <p>{{ datas['street'] }}</p>
+            <div class="d-flex">
+              <div class="w-50 pe-1">
+                <p class="fw-bold">Code postal :</p>
+                <p>{{ datas['postcode'] }}</p>
+              </div>
+              <div class="w-50 ps-1">
+                <p class="fw-bold">Ville :</p>
+                <p>{{ datas['city'] }}</p>
+              </div>
+            </div>
+            <div class="w-50 pe-1">
+              <p class="fw-bold">Téléphone :</p>
+              <p>{{ datas['phoneNumber'] }}</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <h5 class="text-center">Mon événement</h5>
+            <p class="fw-bold">Nom de l'événement :</p>
+            <p>{{ datas['eventName'] }}</p>
+            <p class="fw-bold">Date de l'événement :</p>
+            <p>{{ datas['eventDate']|date('d-m-Y') }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-end">
+        <form action="{{ path('app_order_payment', {  'slug': product.slug}) }}" method="post">
+          <input type="hidden" id="quantity" name="quantity" value="{{ orderQuantity }}">
+          <input type="hidden" id="datas" name="datas" value="{{ datas|json_encode }}">
+          <input type="submit" class="btn btn-outline-danger btn-lg" value="Validation et paiement">
+        </form>
+      </div>
+    </div>
+{% endblock %}

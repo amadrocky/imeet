@@ -20,7 +20,7 @@
     <h6 class="product-price">
       {{ (product.price / 100)|round(0, 'floor') }}<sup>€{{ product.price|slice(-2) }}</sup>
     </h6>
-    <a href="{{ path('app_order_recap') }}"
+    <a href="{{ path('app_order_recap', {'slug': product.slug}) }}"
       class="btn btn-outline-danger btn-lg">
       Commander
     </a>

@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Imeet | Commande {{ product.name }}
+{% endblock %}
+
+{% block body %}
+  {{ form_start(form, {'attr': {'action': path('app_order_confirm', {'slug': product.slug}), 'method': 'GET', 'class': 'order-product container'}}) }}
+    {% include './elements/stepper.html.twig' with {step: 2} %}
+    <div class="order-recap">
+      <div class="row">
+        <div class="col-9">
+          <h4>
+            {{ product.name }}{% if orderQuantity > 1 %} x{{ orderQuantity }}{% endif %}
+          </h4>
+          <ul>
+            <li><span>{{ product.quantity * orderQuantity }}</span> tickets</li>
+              {% for composition in product.compositions %}
+                <li>{{ composition.name }}</li>
+              {% endfor %}
+          </ul>
+        </div>
+        <div class="col-3 d-flex justify-content-end fw-bold">
+          <p class="me-2">
+            {{ orderTotal }}
+          </p>
+          <p>€</p>
+        </div>
+      </div>
+      <input type="hidden" id="quantity" name="quantity" value="{{ orderQuantity }}">
+      <hr/>
+      <div class="row address-form">
+        <div class="col-6">
+          <h5 class="text-center">Mes informations</h5>
+          {{ form_widget(form.email) }}
+          <div class="d-flex">
+            <div class="w-50 pe-1">
+              {{ form_widget(form.lastname) }}
+            </div>
+            <div class="w-50 ps-1">
+              {{ form_widget(form.firstname) }}
+            </div>
+          </div>
+          {{ form_widget(form.street) }}
+          <div class="d-flex">
+            <div class="w-50 pe-1">
+              {{ form_widget(form.postcode) }}
+            </div>
+            <div class="w-50 ps-1">
+              {{ form_widget(form.city) }}
+            </div>
+          </div>
+          <div class="w-50 pe-1">
+            {{ form_widget(form.country) }}
+          </div>
+          <div class="w-50 ps-1">
+            {{ form_widget(form.phoneNumber) }}
+          </div>
+        </div>
+        <div class="col-6">
+          <h5 class="text-center">Mon événement</h5>
+          {{ form_widget(form.eventName) }}
+          {{ form_label(form.eventDate) }}
+          {{ form_widget(form.eventDate) }}
+        </div>
+      </div>
+    </div>
+    <div class="text-end">
+      <input type="submit" class="btn btn-outline-danger btn-lg" value="Confirmation et paiement">
+    </div>
+  {{ form_end(form, {render_rest: false}) }}
+{% endblock %}

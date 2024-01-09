@@ -8,6 +8,7 @@ export default class extends Controller {
         this.defaultquantity = parseInt(this.ticketsTarget.innerText);
         this.defaulproducttTotal = parseFloat(this.productTotalTarget.innerText).toFixed(2);
         this.defaulOrdertTotal = parseFloat(this.orderTotalTarget.innerText).toFixed(2);
+        this.formQuantity = document.getElementById('formQuantity');
     }
 
     decrement() {
@@ -28,6 +29,7 @@ export default class extends Controller {
     updateQuantities() {
         this.quantityTarget.innerText = this.count;
         this.ticketsTarget.innerText = this.defaultquantity * this.count;
+        this.formQuantity.value = this.count;
     }
 
     updateTotal() {
