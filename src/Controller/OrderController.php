@@ -4,12 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Address;
 use App\Entity\Event;
+use App\Entity\Order;
 use App\Entity\Product;
+use App\Entity\Ticket;
+use App\Entity\User;
 use App\Form\AddressFormType;
 use App\Repository\AddressRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,14 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+use function PHPUnit\Framework\isNull;
+
 #[Route('/order', name: 'app_order')]
 class OrderController extends AbstractController
 {
+    private const STRIPE_API_KEY = 'stripe_api_key';
+
     public function __construct(
         private ProductRepository $productRepository,
         private AddressRepository $addressRepository,
-        private EntityManagerInterface $entityManager
-    ) {  
+        private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository
+    ) {
     }
 
     #[Route('/{slug}', name: '_recap')]
@@ -69,7 +79,7 @@ class OrderController extends AbstractController
     {
         $datas = $request->request->all();
         $orderTotal = ($product->getPrice() * $datas['quantity']) / 100;
-        
+
         return $this->render('order/confirm.html.twig', [
             'product' => $product,
             'orderQuantity' => $datas['quantity'],
@@ -86,13 +96,12 @@ class OrderController extends AbstractController
         $orderTotal = ($product->getPrice() * $orderQuantity);
 
         if ($orderQuantity > 0) {
-            // Stripe checkout
-            $stripe = new \Stripe\StripeClient($this->getParameter('stripe_api_key'));
+            $stripe = new \Stripe\StripeClient($this->getParameter(self::STRIPE_API_KEY));
             $customer = $stripe->customers->create([
                 'email' => $datas->email,
             ]);
 
-            Stripe::setApiKey($this->getParameter('stripe_api_key'));
+            Stripe::setApiKey($this->getParameter(self::STRIPE_API_KEY));
             $parameters = [
                 'customer' => $customer,
                 'payment_method_types' => ['card'],
@@ -114,7 +123,7 @@ class OrderController extends AbstractController
                 'success_url' => $this->generateUrl('app_order_payment_success', ['slug' => $product->getSlug(), 'datas' => $datas], UrlGeneratorInterface::ABSOLUTE_URL),
                 'cancel_url' => $this->generateUrl('app_order_payment_error', ['slug' => $product->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
             ];
-            
+
             $session = Session::create($parameters);
 
             $request->getSession()->set('payment_intent', $session->payment_intent);
@@ -135,26 +144,31 @@ class OrderController extends AbstractController
     #[Route('/{slug}/payment/success', name: '_payment_success')]
     public function paymentSuccess(Request $request, Product $product): Response
     {
-        $datas = json_decode($request->request->get('datas'));
+        $paymentIntent = $request->getSession()->get('payment_intent');
+        $datas = $request->query->all('datas');
+        $orderQuantity = $request->request->get('quantity');
+        $event = null;
 
-        // $user = null;
-            
-        // /** @var Address */
-        // $address = $this->addressRepository->findByEmail();
+        if (!isset($paymentIntent)) {
+            $this->redirectToRoute('app_home');
+        }
 
-        // $this->createOrUpdateAddress($address, $datas);
+        Stripe::setApiKey($this->getParameter(self::STRIPE_API_KEY));
+        $intent = PaymentIntent::retrieve($paymentIntent);
 
-        // // persist($address)
-        
-        // // Create order
+        if ($intent->status == "succeeded") {
+            $user = $this->getUser();
 
-        // if (isset($datas->event)) {
-        //     $event = new Event();
+            $this->createOrUpdateAddress($user, $datas);
 
-        //     $event->setName($datas->eventName);
-        //     $event->setStartDate($datas->eventDate);
-        //     $event->setUser($user);
-        // }
+            if (!empty($data['eventName'])) {
+                $event = $this->createEvent($datas);
+            }
+
+            $order = $this->createOrder($product, $event, $orderQuantity, $datas);
+
+            $this->createTickets($order, $product, $orderQuantity, $event);
+        }
 
         return $this->render('order/success.html.twig', [
             'product' => $product,
@@ -170,26 +184,104 @@ class OrderController extends AbstractController
         ]);
     }
 
-    private function createOrUpdateAddress(?Address $address, $datas)
+    private function createOrUpdateAddress(?User $user, array $datas): Address
     {
-        if (is_null($address)) {
-            $address = new Address();
+        if (is_null($user)) {
+            $existentUser = $this->userRepository->findOneBy(['email' => $datas['email']]);
+
+            if (empty($existentUser)) {
+                $address = new Address();
+            } else {
+                $user = $existentUser;
+                $user->setLastname($datas['lastname']);
+                $user->setFirstname($datas['firstname']);
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+
+                $address = $user->getAddress();
+                $address->setUser($user);
+            }
+        } else {
+            $user->setLastname($datas['lastname']);
+            $user->setFirstname($datas['firstname']);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            $address = $user->getAddress();
+            $address->setUser($user);
         }
 
-        $user = $address->getUser();
-        $user->setLastname($datas->lastname);
-        $user->setFirstname($datas->firstname);
-        // persist($user)
+        $address->setEmail($datas['email']);
 
-        $address->setStreet($datas->street);
-        $address->setPostcode($datas->postcode);
-        $address->setCity($datas->city);
-        $address->setCountry($datas->country);
-        $address->setPhoneNumber($datas->phoneNumber);
-        $address->setEmail($datas->email);
-        // $address->setUser(user);
+        if (!empty($satas['street'])) {
+            $address->setStreet($datas['street']);
+        }
 
-        // persist($address)
-        // flush()
+        if (!empty($satas['postcode'])) {
+            $address->setPostcode($datas['postcode']);
+        }
+
+        if (!empty($satas['city'])) {
+            $address->setCity($datas['city']);
+        }
+        
+        if (!empty($satas['country'])) {
+            $address->setCountry($datas['country']);
+        }
+
+        if (!empty($satas['phoneNumber'])) {
+            $address->setPhoneNumber($datas['phoneNumber']);
+        }
+
+        $this->entityManager->persist($address);
+        $this->entityManager->flush();
+
+        return $address;
+    }
+
+    private function createEvent(array $datas): Event
+    {
+        $event = new Event();
+
+        $event->setEmail($datas['email']);
+        $event->setName($datas['eventName']);
+        $event->setStartDate($datas['eventDate']);
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
+
+        return $event;
+    }
+
+    private function createOrder(Product $product, ?Event $event, int $quantity, array $datas): Order
+    {
+        $order = new Order();
+
+        $order->setProduct($product);
+        $order->setEmail($datas['email']);
+        $order->setEvent($event);
+        $order->setQuantity($quantity);
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
+
+        return $order;
+    }
+
+    private function createTickets(Order $order, Product $product, int $quantity, ?Event $event = null)
+    {
+        $totalTickets = $product->getQuantity() * $quantity;
+
+        for ($i = 0; $i < $totalTickets; $i++) {
+            $ticket = new Ticket();
+
+            $ticket->setBill($order);
+            $ticket->setEvent($event);
+            $ticket->setNumber(strtoupper(uniqId(rand())));
+            $ticket->setQrCode('https://imeet.fr/build/qrCode/');
+            $ticket->setState('active');
+
+            $this->entityManager->persist($ticket);
+        }
+
+        $this->entityManager->flush();
     }
 }
