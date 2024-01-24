@@ -13,6 +13,10 @@ use App\Repository\AddressRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
@@ -273,13 +277,23 @@ class OrderController extends AbstractController
 
         for ($i = 0; $i < $totalTickets; $i++) {
             $ticket = new Ticket();
+            $number = strtoupper(uniqId(rand()));
 
-            // create QR code
+            $writer = new PngWriter();
+            $qrCode = new QrCode('https://www.imeet.fr/app/qr/' . $number);
+
+            // name qrCode
+            $qrCodeName = $number . '.png';
+
+            $result = $writer->write($qrCode);
+
+            // Save it to a file
+            $result->saveToFile('/var/www/imeet/imeet/public/imeet/images/qrCodes/'. $qrCodeName); // try __DIR__./$qrCodeName
 
             $ticket->setBill($order);
             $ticket->setEvent($event);
-            $ticket->setNumber(strtoupper(uniqId(rand())));
-            $ticket->setQrCode('https://imeet.fr/build/qrCode/');
+            $ticket->setNumber($number);
+            $ticket->setQrCode($qrCodeName);
             $ticket->setState('active');
 
             $this->entityManager->persist($ticket);
