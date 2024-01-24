@@ -178,8 +178,14 @@ class OrderController extends AbstractController
     }
 
     #[Route('/{slug}/payment/error', name: '_payment_error')]
-    public function paymentError(Product $product): Response
+    public function paymentError(Request $request, Product $product): Response
     {
+        $stripeSessionId = $request->getSession()->get('stripe_session_id');
+
+        if (!isset($stripeSessionId)) {
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('order/error.html.twig', [
             'product' => $product
         ]);
