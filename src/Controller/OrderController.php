@@ -13,12 +13,9 @@ use App\Repository\AddressRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Stripe\Checkout\Session;
-use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,7 +102,6 @@ class OrderController extends AbstractController
                 'email' => $datas->email,
             ]);
 
-            Stripe::setApiKey($this->getParameter(self::STRIPE_API_KEY));
             $parameters = [
                 'customer' => $customer,
                 'payment_method_types' => ['card'],
@@ -118,7 +114,7 @@ class OrderController extends AbstractController
                         'unit_amount' => $orderTotal,
                         'product_data' => [
                             'name' => $product->getName(),
-                            // 'images' => ["https://histoiresdoliviers.fr/images/logoFullBlackGold.png"],
+                            'images' => ["https://imeet.lndo.site.fr/build/logos/imeet.png"],
                         ],
                     ],
                     'quantity' => 1, // Check if we can change or not (if action on stripe price)
@@ -128,9 +124,9 @@ class OrderController extends AbstractController
                 'cancel_url' => $this->generateUrl('app_order_payment_error', ['slug' => $product->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
             ];
 
-            $session = Session::create($parameters);
+            $session = $stripe->checkout->sessions->create($parameters);
 
-            $request->getSession()->set('payment_intent', $session->payment_intent);
+            $request->getSession()->set('stripe_session_id', $session->id);
 
             return $this->redirect($session->url, Response::HTTP_SEE_OTHER);
         } else {
@@ -148,19 +144,20 @@ class OrderController extends AbstractController
     #[Route('/{slug}/payment/success', name: '_payment_success')]
     public function paymentSuccess(Request $request, Product $product): Response
     {
-        $paymentIntent = $request->getSession()->get('payment_intent');
+        $stripeSessionId = $request->getSession()->get('stripe_session_id');
+
+        if (!isset($stripeSessionId)) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $stripe = new \Stripe\StripeClient($this->getParameter(self::STRIPE_API_KEY));
+        $stripeSession = $stripe->checkout->sessions->retrieve($stripeSessionId, []);
+
         $datas = $request->query->all('datas');
         $orderQuantity = $request->request->get('quantity');
         $event = null;
 
-        if (!isset($paymentIntent)) {
-            $this->redirectToRoute('app_home');
-        }
-
-        Stripe::setApiKey($this->getParameter(self::STRIPE_API_KEY));
-        $intent = PaymentIntent::retrieve($paymentIntent);
-
-        if ($intent->status == "succeeded") {
+        if ($stripeSession->payment_status == "paid") {
             $user = $this->getUser();
 
             $this->createOrUpdateAddress($user, $datas);
