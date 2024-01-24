@@ -256,6 +256,7 @@ class OrderController extends AbstractController
     {
         $order = new Order();
 
+        $order->setNumber(uniqid());
         $order->setProduct($product);
         $order->setEmail($datas['email']);
         $order->setEvent($event);
@@ -272,6 +273,8 @@ class OrderController extends AbstractController
 
         for ($i = 0; $i < $totalTickets; $i++) {
             $ticket = new Ticket();
+
+            // create QR code
 
             $ticket->setBill($order);
             $ticket->setEvent($event);

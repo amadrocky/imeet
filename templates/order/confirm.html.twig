@@ -38,42 +38,33 @@
         <hr/>
         <div class="row address-form">
           <div class="col-6">
-            <h5 class="text-center">Mes informations</h5>
-            <p class="fw-bold">Email :</p>
-            <p>{{ datas['email'] }}</p>
+            <h5 class="text-center mb-5">Mes informations</h5>
+            <p><b>Email :</b> {{ datas['email'] }}</p>
             <div class="d-flex">
               <div class="w-50 pe-1">
-                <p class="fw-bold">Nom :</p>
-                <p>{{ datas['lastname'] }}</p>
+                <p><b>Nom :</b> {{ datas['lastname'] }}</p>
               </div>
               <div class="w-50 ps-1">
-                <p class="fw-bold">Prénom :</p>
-                <p>{{ datas['firstname'] }}</p>
+                <p><b>Prénom :</b> {{ datas['firstname'] }}</p>
               </div>
             </div>
-            <p class="fw-bold">Rue :</p>
-            <p>{{ datas['street'] }}</p>
+            <p><b>Rue :</b> {{ datas['street'] }}</p>
             <div class="d-flex">
               <div class="w-50 pe-1">
-                <p class="fw-bold">Code postal :</p>
-                <p>{{ datas['postcode'] }}</p>
+                <p><b>Code postal :</b> {{ datas['postcode'] }}</p>
               </div>
               <div class="w-50 ps-1">
-                <p class="fw-bold">Ville :</p>
-                <p>{{ datas['city'] }}</p>
+                <p><b>Ville :</b> {{ datas['city'] }}</p>
               </div>
             </div>
             <div class="w-50 pe-1">
-              <p class="fw-bold">Téléphone :</p>
-              <p>{{ datas['phoneNumber'] }}</p>
+              <p><b>Téléphone :</b> {{ datas['phoneNumber'] }}</p>
             </div>
           </div>
           <div class="col-6">
-            <h5 class="text-center">Mon événement</h5>
-            <p class="fw-bold">Nom de l'événement :</p>
-            <p>{{ datas['eventName'] }}</p>
-            <p class="fw-bold">Date de l'événement :</p>
-            <p>{{ datas['eventDate']|date('d-m-Y') }}</p>
+            <h5 class="text-center mb-5">Mon événement</h5>
+            <p><b>Nom de l'événement :</b> {{ datas['eventName'] }}</p>
+            <p><b>Date de l'événement :</b> {{ datas['eventDate']|date('d-m-Y') }}</p>
           </div>
         </div>
       </div>

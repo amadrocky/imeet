@@ -2,6 +2,26 @@
     height: 800px;
     background-image: url(../../static/images/music-7238254_1280.jpg);
     background-size: cover;
+    position: relative;
+    .scroller {
+        position: absolute;
+        top: 50vh;
+        left: 50px;
+        height: 5.6em;
+        line-height: 7em;
+        position: relative;
+        overflow: hidden;
+        width: 50em;
+    }
+    .scroller > span {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 5vw;
+        color: white;
+        position: absolute;
+        top: 0;
+        animation: slide 7s infinite;
+        font-weight: bold;
+    }
 }
 
 .landing-intro-img {
@@ -41,5 +61,20 @@
             background-size: cover;
             height: 500px;
         }
+    }
+}
+
+@keyframes slide {
+    0% {
+      top: 0;
+    }
+    25% {
+      top: -2em;
+    }
+    50% {
+      top: -3.8em;
+    }
+    75% {
+      top: -5.6em;
     }
 }
