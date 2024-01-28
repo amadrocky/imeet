@@ -32,29 +32,29 @@
       <div class="row address-form">
         <div class="col-6">
           <h5 class="text-center">Mes informations</h5>
-          {{ form_widget(form.email) }}
+          {{ form_widget(form.email, { 'attr': {'value': user ? user.email : ''} }) }}
           <div class="d-flex">
             <div class="w-50 pe-1">
-              {{ form_widget(form.lastname) }}
+              {{ form_widget(form.lastname, { 'attr': {'value': user ? user.lastname : ''} }) }}
             </div>
             <div class="w-50 ps-1">
-              {{ form_widget(form.firstname) }}
+              {{ form_widget(form.firstname, { 'attr': {'value': user ? user.firstname : ''} }) }}
             </div>
           </div>
-          {{ form_widget(form.street) }}
+          {{ form_widget(form.street, { 'attr': {'value': userAddress ? userAddress.street : ''} }) }}
           <div class="d-flex">
             <div class="w-50 pe-1">
-              {{ form_widget(form.postcode) }}
+              {{ form_widget(form.postcode, { 'attr': {'value': userAddress ? userAddress.postcode : ''} }) }}
             </div>
             <div class="w-50 ps-1">
-              {{ form_widget(form.city) }}
+              {{ form_widget(form.city, { 'attr': {'value': userAddress ? userAddress.city : ''} }) }}
             </div>
           </div>
           <div class="w-50 pe-1">
-            {{ form_widget(form.country) }}
+            {{ form_widget(form.country, { 'attr': {'value': userAddress ? userAddress.country : ''} }) }}
           </div>
           <div class="w-50 ps-1">
-            {{ form_widget(form.phoneNumber) }}
+            {{ form_widget(form.phoneNumber, { 'attr': {'value': userAddress ? userAddress.phoneNumber : ''} }) }}
           </div>
         </div>
         <div class="col-6">

@@ -49,6 +49,9 @@ class OrderController extends AbstractController
     #[Route('/{slug}/address', name: '_address')]
     public function address(Request $request, Product $product): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
         $formQuantity = $request->query->get('formQuantity');
         $orderTotal = ($product->getPrice() * $formQuantity) / 100;
 
@@ -71,7 +74,9 @@ class OrderController extends AbstractController
             'product' => $product,
             'orderQuantity' => $formQuantity,
             'orderTotal' => $orderTotal,
-            'form' => $form
+            'form' => $form,
+            'user' => $user,
+            'userAddress' => $userAddress
         ]);
     }
 
@@ -162,13 +167,13 @@ class OrderController extends AbstractController
 
             $this->createOrUpdateAddress($user, $datas);
 
-            if (!empty($data['eventName'])) {
-                $event = $this->createEvent($datas);
-            }
+            // if (!empty($data['eventName'])) {
+            //     $event = $this->createEvent($datas);
+            // }
 
-            $order = $this->createOrder($product, $event, $orderQuantity, $datas);
+            // $order = $this->createOrder($product, $event, $orderQuantity, $datas);
 
-            $this->createTickets($order, $product, $orderQuantity, $event);
+            // $this->createTickets($order, $product, $orderQuantity, $event);
         }
 
         return $this->render('order/success.html.twig', [
@@ -193,8 +198,10 @@ class OrderController extends AbstractController
 
     private function createOrUpdateAddress(?User $user, array $datas): Address
     {
+        $email = $datas['email'];
+
         if (is_null($user)) {
-            $existentUser = $this->userRepository->findOneBy(['email' => $datas['email']]);
+            $existentUser = $this->userRepository->findOneBy(['email' => $email]);
 
             if (empty($existentUser)) {
                 $address = new Address();
@@ -202,46 +209,45 @@ class OrderController extends AbstractController
                 $user = $existentUser;
                 $user->setLastname($datas['lastname']);
                 $user->setFirstname($datas['firstname']);
-                $this->entityManager->persist($user);
-                $this->entityManager->flush();
+                $this->persistAndFlush($user);
 
-                $address = $user->getAddress();
+                $address = $this->getOrInitUserAddress($user, $email);
+
                 $address->setUser($user);
             }
         } else {
+            $address = $this->getOrInitUserAddress($user, $email);
+
             $user->setLastname($datas['lastname']);
             $user->setFirstname($datas['firstname']);
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+            $this->persistAndFlush($user);
 
-            $address = $user->getAddress();
             $address->setUser($user);
         }
 
         $address->setEmail($datas['email']);
 
-        if (!empty($satas['street'])) {
+        if (!empty($datas['street'])) {
             $address->setStreet($datas['street']);
         }
 
-        if (!empty($satas['postcode'])) {
+        if (!empty($datas['postcode'])) {
             $address->setPostcode($datas['postcode']);
         }
 
-        if (!empty($satas['city'])) {
+        if (!empty($datas['city'])) {
             $address->setCity($datas['city']);
         }
         
-        if (!empty($satas['country'])) {
+        if (!empty($datas['country'])) {
             $address->setCountry($datas['country']);
         }
 
-        if (!empty($satas['phoneNumber'])) {
+        if (!empty($datas['phoneNumber'])) {
             $address->setPhoneNumber($datas['phoneNumber']);
         }
 
-        $this->entityManager->persist($address);
-        $this->entityManager->flush();
+        $this->persistAndFlush($address);
 
         return $address;
     }
@@ -302,6 +308,25 @@ class OrderController extends AbstractController
             $this->entityManager->persist($ticket);
         }
 
+        $this->entityManager->flush();
+    }
+
+    private function getOrInitUserAddress(User $user, string $email): Address
+    {
+        $address = $user->getAddress();
+
+        if (is_null($address)) {
+            $existingAddress = $this->addressRepository->findOneBy(['email' => $email]);
+
+            $address = empty($existingAddress) ? new Address() : $existingAddress;
+        }
+
+        return $address;
+    }
+
+    private function persistAndFlush($object): void
+    {
+        $this->entityManager->persist($object);
         $this->entityManager->flush();
     }
 }

@@ -67,12 +67,15 @@
             <p><b>Date de l'événement :</b> {{ datas['eventDate']|date('d-m-Y') }}</p>
           </div>
         </div>
+        <div class="text-center text-danger">
+          <button class="btn btn-outline-danger btn-sm" onclick="window.history.back()"><i class="fas fa-pencil-alt"></i> Modifier mes informations</button>
+        </div>
       </div>
       <div class="text-end">
         <form action="{{ path('app_order_payment', {  'slug': product.slug}) }}" method="post">
           <input type="hidden" id="quantity" name="quantity" value="{{ orderQuantity }}">
           <input type="hidden" id="datas" name="datas" value="{{ datas|json_encode }}">
-          <input type="submit" class="btn btn-outline-danger btn-lg" value="Validation et paiement">
+          <input type="submit" class="btn btn-danger btn-lg" value="Validation et paiement">
         </form>
       </div>
     </div>
