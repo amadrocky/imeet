@@ -57,12 +57,14 @@
             {{ form_widget(form.phoneNumber, { 'attr': {'value': userAddress ? userAddress.phoneNumber : ''} }) }}
           </div>
         </div>
-        <div class="col-6">
-          <h5 class="text-center">Mon événement</h5>
-          {{ form_widget(form.eventName) }}
-          {{ form_label(form.eventDate) }}
-          {{ form_widget(form.eventDate) }}
-        </div>
+        {% if hasEvent %}
+          <div class="col-6">
+            <h5 class="text-center">Mon événement</h5>
+            {{ form_widget(form.eventName, { 'attr': {'required': 'required'} }) }}
+            {{ form_label(form.eventDate) }}
+            {{ form_widget(form.eventDate, { 'attr': {'required': 'required'} }) }}
+          </div>
+        {% endif %}
       </div>
     </div>
     <div class="text-end">

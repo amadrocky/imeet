@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class EventTypeExtension extends AbstractTypeExtension
 {
@@ -35,6 +36,9 @@ class EventTypeExtension extends AbstractTypeExtension
                 'label' => 'Date de l\'événement',
                 'required' => false,
                 'widget' => 'single_text',
+                'attr' => [
+                    'min' => (new \DateTime())->format('Y-m-d')
+                ]
             ])
         ;
     }

@@ -12,6 +12,7 @@ use App\Form\AddressFormType;
 use App\Repository\AddressRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -54,6 +55,7 @@ class OrderController extends AbstractController
         $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
         $formQuantity = $request->query->get('formQuantity');
         $orderTotal = ($product->getPrice() * $formQuantity) / 100;
+        $hasEvent = $this->hasEvent($product);
 
         $form = $this->createForm(AddressFormType::class);
 
@@ -67,6 +69,7 @@ class OrderController extends AbstractController
                 'product' => $product,
                 'orderQuantity' => $formQuantity,
                 'orderTotal' => $orderTotal,
+                'hasEvent' => $hasEvent
             ]);
         }
 
@@ -76,7 +79,8 @@ class OrderController extends AbstractController
             'orderTotal' => $orderTotal,
             'form' => $form,
             'user' => $user,
-            'userAddress' => $userAddress
+            'userAddress' => $userAddress,
+            'hasEvent' => $hasEvent
         ]);
     }
 
@@ -85,12 +89,14 @@ class OrderController extends AbstractController
     {
         $datas = $request->request->all();
         $orderTotal = ($product->getPrice() * $datas['quantity']) / 100;
+        $hasEvent = $this->hasEvent($product);
 
         return $this->render('order/confirm.html.twig', [
             'product' => $product,
             'orderQuantity' => $datas['quantity'],
             'orderTotal' => $orderTotal,
-            'datas' => $datas['address_form']
+            'datas' => $datas['address_form'],
+            'hasEvent' => $hasEvent
         ]);
     }
 
@@ -167,9 +173,9 @@ class OrderController extends AbstractController
 
             $this->createOrUpdateAddress($user, $datas);
 
-            // if (!empty($data['eventName'])) {
-            //     $event = $this->createEvent($datas);
-            // }
+            if (!empty($datas['eventName'])) {
+                $event = $this->createEvent($datas);
+            }
 
             // $order = $this->createOrder($product, $event, $orderQuantity, $datas);
 
@@ -258,9 +264,8 @@ class OrderController extends AbstractController
 
         $event->setEmail($datas['email']);
         $event->setName($datas['eventName']);
-        $event->setStartDate($datas['eventDate']);
-        $this->entityManager->persist($event);
-        $this->entityManager->flush();
+        $event->setStartDate(new DateTime($datas['eventDate']));
+        $this->persistAndFlush($event);
 
         return $event;
     }
@@ -328,5 +333,10 @@ class OrderController extends AbstractController
     {
         $this->entityManager->persist($object);
         $this->entityManager->flush();
+    }
+
+    private function hasEvent(Product $product): bool
+    {
+        return count($product->getCompositions()) > 1;
     }
 }

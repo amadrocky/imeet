@@ -61,11 +61,13 @@
               <p><b>Téléphone :</b> {{ datas['phoneNumber'] }}</p>
             </div>
           </div>
-          <div class="col-6">
-            <h5 class="text-center mb-5">Mon événement</h5>
-            <p><b>Nom de l'événement :</b> {{ datas['eventName'] }}</p>
-            <p><b>Date de l'événement :</b> {{ datas['eventDate']|date('d-m-Y') }}</p>
-          </div>
+          {% if hasEvent %}
+            <div class="col-6">
+              <h5 class="text-center mb-5">Mon événement</h5>
+              <p><b>Nom de l'événement :</b> {{ datas['eventName'] }}</p>
+              <p><b>Date de l'événement :</b> {{ datas['eventDate']|date('d-m-Y') }}</p>
+            </div>
+          {% endif %}
         </div>
         <div class="text-center text-danger">
           <button class="btn btn-outline-danger btn-sm" onclick="window.history.back()"><i class="fas fa-pencil-alt"></i> Modifier mes informations</button>

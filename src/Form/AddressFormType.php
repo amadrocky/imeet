@@ -48,7 +48,7 @@ class AddressFormType extends AbstractType
                 ]
             ])
             ->add('email', EmailType::class, [
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Email',
                 ]
