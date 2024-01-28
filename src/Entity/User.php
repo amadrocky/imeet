@@ -46,18 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Address $address = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
-    private Collection $events;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
-    private Collection $orders;
-
-    public function __construct()
-    {
-        $this->events = new ArrayCollection();
-        $this->orders = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -184,14 +172,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->address = $address;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Order>
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
     }
 
 }
