@@ -20,7 +20,7 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $number = null;
+    private ?string $number = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
@@ -31,10 +31,6 @@ class Order
 
     #[ORM\Column]
     private ?int $total = null;
-
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Promotion $promotion = null;
@@ -61,12 +57,12 @@ class Order
         return $this->id;
     }
 
-    public function getNumber(): ?int
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setNumber(int $number): static
+    public function setNumber(string $number): static
     {
         $this->number = $number;
 
@@ -105,18 +101,6 @@ class Order
     public function setTotal(int $total): static
     {
         $this->total = $total;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
 
         return $this;
     }

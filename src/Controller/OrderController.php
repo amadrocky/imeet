@@ -104,7 +104,7 @@ class OrderController extends AbstractController
     public function payment(Request $request, Product $product): Response
     {
         $datas = json_decode($request->request->get('datas'));
-        $orderQuantity = $request->request->get('quantity');
+        $orderQuantity = intval($request->request->get('quantity'));
         $orderTotal = ($product->getPrice() * $orderQuantity);
 
         if ($orderQuantity > 0) {
@@ -122,17 +122,23 @@ class OrderController extends AbstractController
                         'product_data' => [
                             'name' => $product->getName(),
                         ],
-                        'unit_amount' => $orderTotal,
+                        'unit_amount' => $product->getPrice(),
                         'product_data' => [
                             'name' => $product->getName(),
                             'images' => ["https://imeet.lndo.site.fr/build/logos/imeet.png"],
                         ],
                     ],
-                    'quantity' => 1, // Check if we can change or not (if action on stripe price)
+                    'quantity' => $orderQuantity, // Check if we can change or not (if action on stripe price)
                 ]],
                 'mode' => 'payment',
-                'success_url' => $this->generateUrl('app_order_payment_success', ['slug' => $product->getSlug(), 'datas' => $datas], UrlGeneratorInterface::ABSOLUTE_URL),
-                'cancel_url' => $this->generateUrl('app_order_payment_error', ['slug' => $product->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
+                'success_url' => $this->generateUrl('app_order_payment_success', [
+                    'slug' => $product->getSlug(), 
+                    'datas' => $datas,
+                    'quantity' => $orderQuantity
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
+                'cancel_url' => $this->generateUrl('app_order_payment_error', [
+                    'slug' => $product->getSlug()
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
             ];
 
             $session = $stripe->checkout->sessions->create($parameters);
@@ -165,7 +171,7 @@ class OrderController extends AbstractController
         $stripeSession = $stripe->checkout->sessions->retrieve($stripeSessionId, []);
 
         $datas = $request->query->all('datas');
-        $orderQuantity = $request->request->get('quantity');
+        $orderQuantity = intval($request->query->get('quantity'));
         $event = null;
 
         if ($stripeSession->payment_status == "paid") {
@@ -177,7 +183,7 @@ class OrderController extends AbstractController
                 $event = $this->createEvent($datas);
             }
 
-            // $order = $this->createOrder($product, $event, $orderQuantity, $datas);
+            $order = $this->createOrder($product, $event, $orderQuantity, $datas);
 
             // $this->createTickets($order, $product, $orderQuantity, $event);
         }
@@ -279,8 +285,9 @@ class OrderController extends AbstractController
         $order->setEmail($datas['email']);
         $order->setEvent($event);
         $order->setQuantity($quantity);
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
+        $order->setTotal($product->getPrice() * $quantity);
+        $order->setState('paid'); // Put it in const
+        $this->persistAndFlush($order);
 
         return $order;
     }
