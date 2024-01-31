@@ -55,7 +55,7 @@ class OrderController extends AbstractController
         $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
         $formQuantity = $request->query->get('formQuantity');
         $orderTotal = ($product->getPrice() * $formQuantity) / 100;
-        $hasEvent = $this->hasEvent($product);
+        $hasEvent = $product->hasEvent();
 
         $form = $this->createForm(AddressFormType::class);
 
@@ -88,15 +88,13 @@ class OrderController extends AbstractController
     public function confirm(Request $request, Product $product): Response
     {
         $datas = $request->request->all();
-        $orderTotal = ($product->getPrice() * $datas['quantity']) / 100;
-        $hasEvent = $this->hasEvent($product);
 
         return $this->render('order/confirm.html.twig', [
             'product' => $product,
             'orderQuantity' => $datas['quantity'],
-            'orderTotal' => $orderTotal,
+            'orderTotal' => ($product->getPrice() * $datas['quantity']) / 100,
             'datas' => $datas['address_form'],
-            'hasEvent' => $hasEvent
+            'hasEvent' => $product->hasEvent()
         ]);
     }
 
@@ -128,7 +126,7 @@ class OrderController extends AbstractController
                             'images' => ["https://imeet.lndo.site.fr/build/logos/imeet.png"],
                         ],
                     ],
-                    'quantity' => $orderQuantity, // Check if we can change or not (if action on stripe price)
+                    'quantity' => $orderQuantity,
                 ]],
                 'mode' => 'payment',
                 'success_url' => $this->generateUrl('app_order_payment_success', [
@@ -185,12 +183,13 @@ class OrderController extends AbstractController
 
             $order = $this->createOrder($product, $event, $orderQuantity, $datas);
 
-            // $this->createTickets($order, $product, $orderQuantity, $event);
+            $this->createTickets($order, $product, $orderQuantity, $event);
         }
 
         return $this->render('order/success.html.twig', [
             'product' => $product,
-            'datas' => $datas
+            'datas' => $datas,
+            'orderNumber' => $order->getNumber()
         ]);
     }
 
@@ -292,7 +291,7 @@ class OrderController extends AbstractController
         return $order;
     }
 
-    private function createTickets(Order $order, Product $product, int $quantity, ?Event $event = null)
+    private function createTickets(Order $order, Product $product, int $quantity, ?Event $event = null): void
     {
         $totalTickets = $product->getQuantity() * $quantity;
 
@@ -300,27 +299,35 @@ class OrderController extends AbstractController
             $ticket = new Ticket();
             $number = strtoupper(uniqId(rand()));
 
-            $writer = new PngWriter();
-            $qrCode = new QrCode('https://www.imeet.fr/app/qr/' . $number);
-
-            // name qrCode
-            $qrCodeName = $number . '.png';
-
-            $result = $writer->write($qrCode);
-
-            // Save it to a file
-            $result->saveToFile('/var/www/imeet/imeet/public/imeet/images/qrCodes/'. $qrCodeName); // try __DIR__./$qrCodeName
+            if ($product->hasEvent()) {
+                $qrCodeName = $this->createQrCode($number);
+                $ticket->setQrCode($qrCodeName);
+            }
 
             $ticket->setBill($order);
             $ticket->setEvent($event);
             $ticket->setNumber($number);
-            $ticket->setQrCode($qrCodeName);
             $ticket->setState('active');
 
             $this->entityManager->persist($ticket);
         }
 
         $this->entityManager->flush();
+    }
+
+    private function createQrCode(string $number): string
+    {
+        $writer = new PngWriter();
+
+        $qrCode = new QrCode('https://www.imeet.fr/app/qr/' . $number);
+
+        $qrCodeName = $number . '.png';
+
+        $result = $writer->write($qrCode);
+
+        $result->saveToFile('/app/public/qrCodes/'. $qrCodeName);
+
+        return $qrCodeName;
     }
 
     private function getOrInitUserAddress(User $user, string $email): Address
@@ -341,9 +348,5 @@ class OrderController extends AbstractController
         $this->entityManager->persist($object);
         $this->entityManager->flush();
     }
-
-    private function hasEvent(Product $product): bool
-    {
-        return count($product->getCompositions()) > 1;
-    }
+    
 }

@@ -239,4 +239,9 @@ class Product
 
         return $this;
     }
+
+    public function hasEvent(): bool
+    {
+        return count($this->getCompositions()) > 1;
+    }
 }

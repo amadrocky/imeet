@@ -9,7 +9,7 @@
         {% include './elements/stepper.html.twig' with {step: 3} %}
       <div class="order-recap">
         <h3>Merci pour votre commande !</h3>
-        <p>Votre commande est validée. Elle porte le numéro ...</p>
+        <p>Votre commande est validée. Elle porte le numéro <b>{{ orderNumber|upper }}</b>.</p>
         <h4>Et maintenant :</h4>
         <ul>
             <li>Créez ou accédez à votre espace client</li>
