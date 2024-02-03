@@ -5,60 +5,100 @@
 {% endblock %}
 
 {% block body %}
-    <div class="order-product container">
-        <div class="order-recap">
-          <h3>{{ user.fullName }}</h3>
-          <ul class="nav nav-pills nav-fill">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Informations personnelles</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Mes commandes</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Mes événements</button>
-            </li>
-          </ul>
-          <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active row justify-content-around" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-              {{ form_start(form, {'attr': {'action': '', 'method': 'GET', 'class': 'order-product container col-8'}}) }}
-                {{ form_widget(form.email, { 'attr': {'value': user ? user.email : '', 'disabled': 'disabled'} }) }}
-                  <div class="d-flex">
-                    <div class="w-50 pe-1">
-                      {{ form_widget(form.lastname, { 'attr': {'value': user ? user.lastname : ''} }) }}
-                    </div>
-                    <div class="w-50 ps-1">
-                      {{ form_widget(form.firstname, { 'attr': {'value': user ? user.firstname : ''} }) }}
-                    </div>
-                  </div>
-                  {{ form_widget(form.street, { 'attr': {'value': userAddress ? userAddress.street : ''} }) }}
-                  <div class="d-flex">
-                    <div class="w-50 pe-1">
-                      {{ form_widget(form.postcode, { 'attr': {'value': userAddress ? userAddress.postcode : ''} }) }}
-                    </div>
-                    <div class="w-50 ps-1">
-                      {{ form_widget(form.city, { 'attr': {'value': userAddress ? userAddress.city : ''} }) }}
-                    </div>
-                  </div>
-                  <div class="w-50 pe-1">
-                    {{ form_widget(form.country, { 'attr': {'value': userAddress ? userAddress.country : ''} }) }}
-                  </div>
-                  <div class="w-50 ps-1">
-                    {{ form_widget(form.phoneNumber, { 'attr': {'value': userAddress ? userAddress.phoneNumber : ''} }) }}
-                  </div>
-                  <div class="text-end">
-                    <input type="submit" class="btn btn-outline-danger btn-sm" value="Modifier mes informations">
-                  </div>
-              {{ form_end(form, {render_rest: false}) }}
+  <div class="order-product container">
+    <div class="order-recap">
+      <h4 class="text-center mb-4">{{ user.fullName }}</h4>
+      <ul class="nav nav-pills nav-fill">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Informations personnelles</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Mes commandes</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Mes événements</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+          {{ form_start(form, {'attr': {'action': '', 'method': 'GET', 'class': 'order-product container col-8'}}) }}
+            {{ form_widget(form.email, { 'attr': {'value': user ? user.email : '', 'disabled': 'disabled'} }) }}
+            <div class="d-flex">
+              <div class="w-50 pe-1">
+                {{ form_widget(form.lastname, { 'attr': {'value': user ? user.lastname : ''} }) }}
+              </div>
+              <div class="w-50 ps-1">
+                {{ form_widget(form.firstname, { 'attr': {'value': user ? user.firstname : ''} }) }}
+              </div>
             </div>
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-          </div>
-          <div class="text-center">
-            <a class="btn btn-danger" aria-current="page" href="{{ path('app_logout') }}">
-							Me déconnecter
-						</a>
-          </div>
+            {{ form_widget(form.street, { 'attr': {'value': userAddress ? userAddress.street : ''} }) }}
+            <div class="d-flex">
+              <div class="w-50 pe-1">
+                {{ form_widget(form.postcode, { 'attr': {'value': userAddress ? userAddress.postcode : ''} }) }}
+              </div>
+              <div class="w-50 ps-1">
+                {{ form_widget(form.city, { 'attr': {'value': userAddress ? userAddress.city : ''} }) }}
+              </div>
+            </div>
+            <div class="w-50 pe-1">
+              {{ form_widget(form.country, { 'attr': {'value': userAddress ? userAddress.country : ''} }) }}
+            </div>
+            <div class="w-50 ps-1">
+              {{ form_widget(form.phoneNumber, { 'attr': {'value': userAddress ? userAddress.phoneNumber : ''} }) }}
+            </div>
+            <div class="text-end">
+              <input type="submit" class="btn btn-outline-danger btn-sm" value="Modifier mes informations">
+            </div>
+          {{ form_end(form, {render_rest: false}) }}
         </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+          <table class="table table-hover mt-5">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Numéro</th>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+                <tr>
+                  <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                  <td>{{ order.number|upper }}</td>
+                  <td class="order-card-text">{{ order.product.name }}</td>
+                  <td>{{ order.quantity }}</td>
+                  <td class="order-card-text">{{ order.total|price }} €</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+          <table class="table table-hover mt-5">
+            <thead>
+              <tr>
+                <th>Nom de l'évenement</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for event in events %}
+                <tr>
+                  <td>{{ event.name }}</td>
+                  <td>{{ event.createdAt|date('d/m/Y') }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-center">
+        <a class="btn btn-danger" aria-current="page" href="{{ path('app_logout') }}">
+          Me déconnecter
+        </a>
+      </div>
     </div>
+  </div>
 {% endblock %}
