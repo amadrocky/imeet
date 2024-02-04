@@ -62,3 +62,21 @@ small {
 tr, td {
     text-align: center;
 }
+
+.nav-pills .nav-link.active {
+    background-color: rgba(220, 53, 69, .8);
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    border: 1px solid rgba(220, 53, 69, .3);
+    transition: none;
+    color: black;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: rgba(220, 53, 69, .3);
+}
