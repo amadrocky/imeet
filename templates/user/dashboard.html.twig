@@ -8,6 +8,14 @@
   <div class="order-product container">
     <div class="order-recap">
       <h4 class="text-center mb-5">{{ user.fullName }}</h4>
+      {% for label, messages in app.flashes %}
+        {% for message in messages %}
+          <div class="col-12 alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endfor %}
       <ul class="nav nav-pills nav-fill">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Informations personnelles</button>
@@ -21,14 +29,14 @@
       </ul>
       <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-          {{ form_start(form, {'attr': {'action': '', 'method': 'GET', 'class': 'order-product container col-8'}}) }}
-            {{ form_widget(form.email, { 'attr': {'value': user ? user.email : '', 'disabled': 'disabled'} }) }}
+          {{ form_start(form, {'attr': {'action': path('app_user_dashboard_address_update', {'id': user.id}), 'method': 'POST', 'class': 'order-product container col-8'}}) }}
+            {{ form_widget(form.email, { 'attr': {'value': user.email, 'disabled': 'disabled'} }) }}
             <div class="d-flex">
               <div class="w-50 pe-1">
-                {{ form_widget(form.lastname, { 'attr': {'value': user ? user.lastname : ''} }) }}
+                {{ form_widget(form.lastname, { 'attr': {'value': user.lastname} }) }}
               </div>
               <div class="w-50 ps-1">
-                {{ form_widget(form.firstname, { 'attr': {'value': user ? user.firstname : ''} }) }}
+                {{ form_widget(form.firstname, { 'attr': {'value': user.firstname} }) }}
               </div>
             </div>
             {{ form_widget(form.street, { 'attr': {'value': userAddress ? userAddress.street : ''} }) }}

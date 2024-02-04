@@ -12,6 +12,8 @@ use App\Form\AddressFormType;
 use App\Repository\AddressRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
+use App\Service\GlobalService;
+use App\Service\UserService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\QrCode;
@@ -31,7 +33,9 @@ class OrderController extends AbstractController
         private ProductRepository $productRepository,
         private AddressRepository $addressRepository,
         private EntityManagerInterface $entityManager,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private UserService $userService,
+        private GlobalService $globalService
     ) {
     }
 
@@ -54,20 +58,6 @@ class OrderController extends AbstractController
         $hasEvent = $product->hasEvent();
 
         $form = $this->createForm(AddressFormType::class);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $datas = $form->getData();
-
-            return $this->redirectToRoute('app_order_confirm', [
-                'datas' => $datas,
-                'product' => $product,
-                'orderQuantity' => $formQuantity,
-                'orderTotal' => $orderTotal,
-                'hasEvent' => $hasEvent
-            ]);
-        }
 
         return $this->render('order/address.html.twig', [
             'product' => $product,
@@ -171,7 +161,7 @@ class OrderController extends AbstractController
         if ($stripeSession->payment_status == "paid") {
             $user = $this->getUser();
 
-            $this->createOrUpdateAddress($user, $datas);
+            $this->userService->createOrUpdateAddress($user, $datas);
 
             if (!empty($datas['eventName'])) {
                 $event = $this->createEvent($datas);
@@ -203,62 +193,6 @@ class OrderController extends AbstractController
         ]);
     }
 
-    private function createOrUpdateAddress(?User $user, array $datas): Address
-    {
-        $email = $datas['email'];
-
-        if (is_null($user)) {
-            $existentUser = $this->userRepository->findOneBy(['email' => $email]);
-
-            if (empty($existentUser)) {
-                $address = new Address();
-            } else {
-                $user = $existentUser;
-                $user->setLastname($datas['lastname']);
-                $user->setFirstname($datas['firstname']);
-                $this->persistAndFlush($user);
-
-                $address = $this->getOrInitUserAddress($user, $email);
-
-                $address->setUser($user);
-            }
-        } else {
-            $address = $this->getOrInitUserAddress($user, $email);
-
-            $user->setLastname($datas['lastname']);
-            $user->setFirstname($datas['firstname']);
-            $this->persistAndFlush($user);
-
-            $address->setUser($user);
-        }
-
-        $address->setEmail($datas['email']);
-
-        if (!empty($datas['street'])) {
-            $address->setStreet($datas['street']);
-        }
-
-        if (!empty($datas['postcode'])) {
-            $address->setPostcode($datas['postcode']);
-        }
-
-        if (!empty($datas['city'])) {
-            $address->setCity($datas['city']);
-        }
-        
-        if (!empty($datas['country'])) {
-            $address->setCountry($datas['country']);
-        }
-
-        if (!empty($datas['phoneNumber'])) {
-            $address->setPhoneNumber($datas['phoneNumber']);
-        }
-
-        $this->persistAndFlush($address);
-
-        return $address;
-    }
-
     private function createEvent(array $datas): Event
     {
         $event = new Event();
@@ -266,7 +200,7 @@ class OrderController extends AbstractController
         $event->setEmail($datas['email']);
         $event->setName($datas['eventName']);
         $event->setStartDate(new DateTime($datas['eventDate']));
-        $this->persistAndFlush($event);
+        $this->globalService->persistAndFlush($event);
 
         return $event;
     }
@@ -282,7 +216,7 @@ class OrderController extends AbstractController
         $order->setQuantity($quantity);
         $order->setTotal($product->getPrice() * $quantity);
         $order->setState('paid'); // Put it in const
-        $this->persistAndFlush($order);
+        $this->globalService->persistAndFlush($order);
 
         return $order;
     }
@@ -326,23 +260,4 @@ class OrderController extends AbstractController
         return $qrCodeName;
     }
 
-    private function getOrInitUserAddress(User $user, string $email): Address
-    {
-        $address = $user->getAddress();
-
-        if (is_null($address)) {
-            $existingAddress = $this->addressRepository->findOneBy(['email' => $email]);
-
-            $address = empty($existingAddress) ? new Address() : $existingAddress;
-        }
-
-        return $address;
-    }
-
-    private function persistAndFlush($object): void
-    {
-        $this->entityManager->persist($object);
-        $this->entityManager->flush();
-    }
-    
 }
