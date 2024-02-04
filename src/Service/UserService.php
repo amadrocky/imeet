@@ -29,8 +29,15 @@ class UserService
                 $address = new Address();
             } else {
                 $user = $existentUser;
-                $user->setLastname($datas['lastname']);
-                $user->setFirstname($datas['firstname']);
+
+                if (!empty($datas['lastname'])) {
+                    $user->setLastname($datas['lastname']);
+                }
+
+                if (!empty($datas['firstname'])) {
+                    $user->setFirstname($datas['firstname']);
+                }
+
                 $this->globalService->persistAndFlush($user);
 
                 $address = $this->getOrInitUserAddress($user, $email);
@@ -40,8 +47,14 @@ class UserService
         } else {
             $address = $this->getOrInitUserAddress($user, $email);
 
-            $user->setLastname($datas['lastname']);
-            $user->setFirstname($datas['firstname']);
+            if (!empty($datas['lastname'])) {
+                $user->setLastname($datas['lastname']);
+            }
+
+            if (!empty($datas['firstname'])) {
+                $user->setFirstname($datas['firstname']);
+            }
+            
             $this->globalService->persistAndFlush($user);
 
             $address->setUser($user);
