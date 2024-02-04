@@ -28,11 +28,9 @@ class UserController extends AbstractController
     #[Route('/{id}/dashboard', name: '_dashboard')]
     public function index(User $user): Response
     {
-        $form = $this->createForm(AddressFormType::class);
-
         return $this->render('user/dashboard.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'form' => $this->createForm(AddressFormType::class),
             'userAddress' => $this->addressRepository->findOneBy(['email' => $user->getEmail()]),
             'orders' => $this->orderRepository->findBy(['email' => $user->getEmail()], ['updatedAt' => 'DESC']),
             'events' => $this->eventRepository->findBy(['email' => $user->getEmail()], ['updatedAt' => 'DESC'])
