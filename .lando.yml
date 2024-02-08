@@ -11,15 +11,14 @@ config:
     mysql: 5.7
 
 proxy:
-    mailhog:
-        - mailhog.imeet.lndo.site
+    mailpit:
+        - mailpit.imeet.lndo.site:8025
 services:
     appserver:
         xdebug: true
         overrides:
             environment:
                 PHP_IDE_CONFIG: "serverName=appserver"
-                MAILER_URL: 'mailhog:1025'
     
     database:
         portforward: 3306
@@ -31,11 +30,23 @@ services:
         type: node
         build:
             - npm install
-    mailhog:
-        type: mailhog
-        portforward: true
-        hogfrom:
-            - appserver
+    mailpit:
+      type: compose
+      ssl: true
+      app_mount: false
+      # uniquement ssl par le proxy
+      sslExpose: false
+      # pour exposer en localhost sans proxy (mapping auto)
+      moreHttpPorts:
+        - 8025
+      services:
+        image: axllent/mailpit
+        command: /mailpit
+        environment:
+          MP_MAX_MESSAGES: 5000
+        # pour exposer en localhost
+        ports:
+          - 8025
     phpmyadmin:
         type: phpmyadmin:5.0
         hosts:
