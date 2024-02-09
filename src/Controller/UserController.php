@@ -25,9 +25,14 @@ class UserController extends AbstractController
     ) {
     }
 
-    #[Route('/{id}/dashboard', name: '_dashboard')]
-    public function index(User $user): Response
+    #[Route('/dashboard', name: '_dashboard')]
+    public function index(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+        /** @var User $user  */
+        $user = $this->getUser();
+
         return $this->render('user/dashboard.html.twig', [
             'user' => $user,
             'form' => $this->createForm(AddressFormType::class),
@@ -37,9 +42,14 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/dashboard/update-address', name: '_dashboard_address_update')]
-    public function updateAddress(Request $request, User $user): RedirectResponse
+    #[Route('/dashboard/update-address', name: '_dashboard_address_update')]
+    public function updateAddress(Request $request): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+        /** @var User $user  */
+        $user = $this->getUser();
+        
         $datas = $request->request->all('address_form');
         $datas['email'] = $user->getEmail();
 
