@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Imeet | {{ event.name|capitalize }}
+{% endblock %}
+
+{% block body %}
+  <div class="order-product container">
+    <div class="order-recap">
+        <h4>{{ event.name|capitalize }}</h4>
+      <div {{ vue_component('ScanPage') }}></div>
+    </div>
+  </div>
+{% endblock %}
