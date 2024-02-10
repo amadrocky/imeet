@@ -7,7 +7,16 @@
 {% block body %}
   <div class="order-product container">
     <div class="order-recap">
-      <h4 class="text-center mb-5">{{ user.fullName }}</h4>
+      <div class="d-flex">
+        <div class="w-50">
+          <h4 class="mb-5">{{ user.fullName }}</h4>
+        </div>
+        <div class="text-end w-50">
+          <a class="btn btn-outline-danger btn-sm" aria-current="page" href="{{ path('app_logout') }}">
+            Me déconnecter
+          </a>
+        </div>
+      </div>
       {% for label, messages in app.flashes %}
         {% for message in messages %}
           <div class="col-12 alert alert-success alert-dismissible fade show" role="alert">
@@ -101,11 +110,6 @@
             </tbody>
           </table>
         </div>
-      </div>
-      <div class="text-center">
-        <a class="btn btn-danger" aria-current="page" href="{{ path('app_logout') }}">
-          Me déconnecter
-        </a>
       </div>
     </div>
   </div>
