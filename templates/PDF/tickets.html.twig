@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Imeet | {{ event.name }}
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="icon" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/logos/imeet.png') }}"/>
+
+	<style type="text/css">
+
+		body {
+			font-family: DejaVu Sans;
+		}
+
+		.photo {
+            width: 60px;
+            height: 60px;
+		}
+
+        .table {
+            border-top: 1px solid #d3d3d3;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        h4 {
+            font-size: 30px;
+            Font-weight: bold;
+        }
+
+        .date {
+            font-size: 16px;
+        }
+
+        .number: {
+            font-size: 80px;
+        }
+
+        .qr-code {
+            width: 100px;
+            height: 100px;
+            margin-top: 10px;
+		}
+
+        tr, td: {
+            padding: 5px;
+        }
+
+	</style>
+{% endblock %}
+
+{% block body %}
+    <div class="text-center">
+	    <img class="photo" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/logos/imeet.png') }}" alt="image-titre">
+    </div>
+
+    {% for i in 1..10 %}
+        <div class="top-line"></div>
+        <table class="table">
+            <tr>
+                <td>
+                    <h4>Event name</h4>
+                    <p class="date">15/06/2024</p>
+                    <p class="number">59114195865BAA0B6A2632</p>
+                </td>
+                <td>
+                    <div class="text-end">
+                        <img src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('qrCodes/4472041665BAA432C63F2.png') }}" class="qr-code">
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="text-center">
+            <small>{{ app.request.getSchemeAndHttpHost() }}</small>
+        </div>
+    {% endfor %}
+{% endblock %}
