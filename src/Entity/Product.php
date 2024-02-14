@@ -240,7 +240,7 @@ class Product
         return $this;
     }
 
-    public function hasEvent(): bool
+    public function hasETickets(): bool
     {
         return count($this->getCompositions()) > 1;
     }

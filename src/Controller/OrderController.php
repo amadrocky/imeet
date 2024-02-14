@@ -55,7 +55,6 @@ class OrderController extends AbstractController
         $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
         $formQuantity = $request->query->get('formQuantity');
         $orderTotal = ($product->getPrice() * $formQuantity) / 100;
-        $hasEvent = $product->hasEvent();
 
         $form = $this->createForm(AddressFormType::class);
 
@@ -65,8 +64,7 @@ class OrderController extends AbstractController
             'orderTotal' => $orderTotal,
             'form' => $form,
             'user' => $user,
-            'userAddress' => $userAddress,
-            'hasEvent' => $hasEvent
+            'userAddress' => $userAddress
         ]);
     }
 
@@ -79,8 +77,7 @@ class OrderController extends AbstractController
             'product' => $product,
             'orderQuantity' => $datas['quantity'],
             'orderTotal' => ($product->getPrice() * $datas['quantity']) / 100,
-            'datas' => $datas['address_form'],
-            'hasEvent' => $product->hasEvent()
+            'datas' => $datas['address_form']
         ]);
     }
 
@@ -163,9 +160,7 @@ class OrderController extends AbstractController
 
             $this->userService->createOrUpdateAddress($user, $datas);
 
-            if (!empty($datas['eventName'])) {
-                $event = $this->createEvent($datas);
-            }
+            $event = $this->createEvent($datas);
 
             $order = $this->createOrder($product, $event, $orderQuantity, $datas);
 
@@ -229,7 +224,7 @@ class OrderController extends AbstractController
             $ticket = new Ticket();
             $number = strtoupper(uniqId(rand()));
 
-            if ($product->hasEvent()) {
+            if ($product->hasETickets()) {
                 $qrCodeName = $this->createQrCode($number);
                 $ticket->setQrCode($qrCodeName);
             }
