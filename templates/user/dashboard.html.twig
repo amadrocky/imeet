@@ -109,8 +109,10 @@
                   <td>{{ event.createdAt|date('d/m/Y') }}</td>
                   <td>{{ event.tickets|length }}</td>
                   <td>
-                    <a href="{{ path('app_event_scan', {'id': event.id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-qrcode"></i></a>
-                    <a href="" class="btn btn-danger btn-sm"><i class="fas fa-chart-bar"></i></a>
+                    {% if event.hasETickets %}
+                      <a href="{{ path('app_event_scan', {'id': event.id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-qrcode"></i></a>
+                      <a href="" class="btn btn-danger btn-sm"><i class="fas fa-chart-bar"></i></a>
+                    {% endif %}
                     <a href="{{ path('app_event_tickets', {'id': event.id}) }}" class="btn btn-danger btn-sm" target="_blank"><i class="fas fa-download"></i></a>
                   </td>
                 </tr>
