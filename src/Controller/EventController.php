@@ -17,8 +17,6 @@ class EventController extends AbstractController
     #[Route('/event/{id}', name: '_scan')]
     public function index(Event $event): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
         $this->isOwner($this->getUser(), $event);
 
         return $this->render('event/scan.html.twig', [
@@ -29,10 +27,6 @@ class EventController extends AbstractController
     #[Route('/event/{id}/tickets', name: '_tickets')]
     public function createAndExportTickets(Event $event)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
-        $this->isOwner($this->getUser(), $event);
-
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $pdfOptions->set('isRemoteEnabled', true);

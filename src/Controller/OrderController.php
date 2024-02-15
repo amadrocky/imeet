@@ -9,9 +9,11 @@ use App\Entity\Product;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\AddressFormType;
+use App\Message\Tickets;
 use App\Repository\AddressRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
+use App\Service\EventService;
 use App\Service\GlobalService;
 use App\Service\UserService;
 use DateTime;
@@ -21,6 +23,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -35,7 +38,8 @@ class OrderController extends AbstractController
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
         private UserService $userService,
-        private GlobalService $globalService
+        private GlobalService $globalService,
+        private EventService $eventService
     ) {
     }
 
@@ -140,7 +144,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/{slug}/payment/success', name: '_payment_success')]
-    public function paymentSuccess(Request $request, Product $product): Response
+    public function paymentSuccess(Request $request, Product $product, MessageBusInterface $bus): Response
     {
         $stripeSessionId = $request->getSession()->get('stripe_session_id');
 
@@ -165,6 +169,8 @@ class OrderController extends AbstractController
             $order = $this->createOrder($product, $event, $orderQuantity, $datas);
 
             $this->createTickets($order, $product, $orderQuantity, $event);
+
+            $bus->dispatch(new Tickets($event));
         }
 
         return $this->render('order/success.html.twig', [

@@ -28,8 +28,6 @@ class UserController extends AbstractController
     #[Route('/dashboard', name: '_dashboard')]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
         /** @var User $user  */
         $user = $this->getUser();
 
@@ -45,8 +43,6 @@ class UserController extends AbstractController
     #[Route('/dashboard/update-address', name: '_dashboard_address_update')]
     public function updateAddress(Request $request): RedirectResponse
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
         /** @var User $user  */
         $user = $this->getUser();
         

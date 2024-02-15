@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="icon" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/logos/imeet.png') }}"/>
+	<link rel="icon" href="https://imeet.lndo.site/{{ asset('build/logos/imeet.png') }}"/>
 
 	<style type="text/css">
 
@@ -51,7 +51,7 @@
 
 {% block body %}
     <div class="text-center">
-	    <img class="photo" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/logos/imeet.png') }}" alt="image-titre">
+	    <img class="photo" src="https://imeet.lndo.site/{{ asset('build/logos/imeet.png') }}" alt="image-titre">
     </div>
 
     {% for i in 1..10 %}
@@ -65,13 +65,13 @@
                 </td>
                 <td>
                     <div class="text-end">
-                        <img src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('qrCodes/4472041665BAA432C63F2.png') }}" class="qr-code">
+                        <img src="https://imeet.lndo.site/{{ asset('qrCodes/4472041665BAA432C63F2.png') }}" class="qr-code">
                     </div>
                 </td>
             </tr>
         </table>
         <div class="text-center">
-            <small>{{ app.request.getSchemeAndHttpHost() }}</small>
+            <small>https://imeet.lndo.site/</small>
         </div>
     {% endfor %}
 {% endblock %}
