@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\User;
+use App\Service\EventService;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Exception;
@@ -14,6 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/app', name: 'app_event')]
 class EventController extends AbstractController
 {
+    public function __construct(
+        private EventService $eventService
+    ) {
+    }
+
     #[Route('/event/{id}', name: '_scan')]
     public function index(Event $event): Response
     {
@@ -25,25 +31,9 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}/tickets', name: '_tickets')]
-    public function createAndExportTickets(Event $event)
+    public function downloadTickets(Event $event): Response
     {
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-        $pdfOptions->set('isRemoteEnabled', true);
-
-        $dompdf = new Dompdf($pdfOptions);
-        
-        $html = $this->renderView('PDF/tickets.html.twig', [
-            'event' => $event,
-            'tickets' => $event->getTickets()
-        ]);
-
-        $dompdf->loadHtml(($html));
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $dompdf->stream(ucfirst($event->getName()) . '.pdf', [
-            "Attachment" => false
-        ]);
+        return $this->eventService->getTicketsFile($event);
     }
 
     public function isOwner(User $user, Event $event): void

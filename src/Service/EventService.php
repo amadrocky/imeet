@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class EventService extends AbstractController
 {
-    public const PDF_FOLDER_PATH = './var/PDF/';
+    public const PDF_FOLDER_PATH = '/var/PDF/';
 
     public function exportTickets(Event $event): void
     {
@@ -40,7 +40,7 @@ class EventService extends AbstractController
 
     public function getTicketsFile(Event $event): Response
     {
-        $file = new File(self::PDF_FOLDER_PATH.ucfirst($event->getName()).'.pdf');
+        $file = new File($this->getParameter('kernel.project_dir').self::PDF_FOLDER_PATH.ucfirst($event->getName()).'.pdf');
 
         $response = new Response(file_get_contents($file->getPathname()), Response::HTTP_OK, ['Content-Type' => $file->getMimeType()]);
         $response->headers->add([
