@@ -31,16 +31,16 @@ class EventService extends AbstractController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         
-        $fileName = ucfirst($event->getName()).'.pdf';
+        $fileName = $this->getFileName($event);
 
         $output = $dompdf->output();
 
-        file_put_contents(self::PDF_FOLDER_PATH.$fileName, $output);
+        file_put_contents($this->getParameter('kernel.project_dir').self::PDF_FOLDER_PATH.$fileName, $output);
     }
 
     public function getTicketsFile(Event $event): Response
     {
-        $file = new File($this->getParameter('kernel.project_dir').self::PDF_FOLDER_PATH.ucfirst($event->getName()).'.pdf');
+        $file = new File($this->getParameter('kernel.project_dir').self::PDF_FOLDER_PATH.$this->getFileName($event));
 
         $response = new Response(file_get_contents($file->getPathname()), Response::HTTP_OK, ['Content-Type' => $file->getMimeType()]);
         $response->headers->add([
@@ -48,5 +48,10 @@ class EventService extends AbstractController
         ]);
 
         return $response;
+    }
+
+    public function getFileName(Event $event): string
+    {
+        return 'Imeet_'.$event->getId().'.pdf';
     }
 }
