@@ -3,9 +3,11 @@
 namespace App\Service;
 
 use App\Entity\Event;
+use App\Entity\User;
 use App\Helpers\Constants;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,5 +61,12 @@ class EventService extends AbstractController
     public function getFileName(Event $event): string
     {
         return sprintf('Imeet_%d.pdf', $event->getId());
+    }
+
+    public function isOwner(User $user, Event $event): void
+    {
+        if ($user->getEmail() !== $event->getEmail()) {
+            throw new Exception('The actual user doesn\'t own this event.');
+        }
     }
 }

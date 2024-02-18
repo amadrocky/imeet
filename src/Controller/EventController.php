@@ -23,7 +23,7 @@ class EventController extends AbstractController
     #[Route('/event/{id}', name: '_scan')]
     public function index(Event $event): Response
     {
-        $this->isOwner($this->getUser(), $event);
+        $this->eventService->isOwner($this->getUser(), $event);
 
         return $this->render('event/scan.html.twig', [
             'event' => $event
@@ -33,13 +33,8 @@ class EventController extends AbstractController
     #[Route('/event/{id}/tickets', name: '_tickets')]
     public function downloadTickets(Event $event): Response
     {
+        $this->eventService->isOwner($this->getUser(), $event);
+        
         return $this->eventService->getTicketsFile($event);
-    }
-
-    public function isOwner(User $user, Event $event): void
-    {
-        if ($user->getEmail() !== $event->getEmail()) {
-            throw new Exception('The actual user doesn\'t own this event.');
-        }
     }
 }
