@@ -2,17 +2,15 @@
 
 namespace App\Message;
 
-use App\Entity\Event;
-
 class Tickets
 {
     public function __construct(
-        private Event $event,
+        private int $eventId,
     ) {
     }
 
-    public function getContent(): Event
+    public function getEventId(): int
     {
-        return $this->event;
+        return $this->eventId;
     }
 }

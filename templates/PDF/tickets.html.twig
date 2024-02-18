@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="icon" href="https://imeet.lndo.site/{{ asset('build/logos/imeet.png') }}"/>
+	<link rel="icon" href="https://imeet.lndo.site/build/logos/imeet.png"/>
 
 	<style type="text/css">
 
@@ -51,27 +51,28 @@
 
 {% block body %}
     <div class="text-center">
-	    <img class="photo" src="https://imeet.lndo.site/{{ asset('build/logos/imeet.png') }}" alt="image-titre">
+	    <img class="photo" src="https://imeet.lndo.site/build/logos/imeet.png" alt="image-titre">
     </div>
-
-    {% for i in 1..10 %}
+    {% for ticket in tickets %}
         <div class="top-line"></div>
         <table class="table">
             <tr>
                 <td>
-                    <h4>Event name</h4>
-                    <p class="date">15/06/2024</p>
-                    <p class="number">59114195865BAA0B6A2632</p>
+                    <h4>{{ event.name }}</h4>
+                    <p class="date">{{ event.startDate|date('d/m/Y') }}</p>
+                    <p class="number">{{ ticket.number }}</p>
                 </td>
-                <td>
-                    <div class="text-end">
-                        <img src="https://imeet.lndo.site/{{ asset('qrCodes/4472041665BAA432C63F2.png') }}" class="qr-code">
-                    </div>
-                </td>
+                {% if ticket.qrCode %}
+                    <td>
+                        <div class="text-end">
+                            <img src="https://imeet.lndo.site/qrCodes/{{ ticket.qrCode }}" class="qr-code">
+                        </div>
+                    </td>
+                {% endif %}
             </tr>
         </table>
         <div class="text-center">
-            <small>https://imeet.lndo.site/</small>
+            <small>https://imeet.lndo.site</small>
         </div>
     {% endfor %}
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Event;
+use App\Helpers\Constants;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,8 +13,6 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class EventService extends AbstractController
 {
-    public const PDF_FOLDER_PATH = '/var/PDF/';
-
     public function exportTickets(Event $event): void
     {
         $pdfOptions = new Options();
@@ -24,10 +23,10 @@ class EventService extends AbstractController
         
         $html = $this->renderView('PDF/tickets.html.twig', [
             'event' => $event,
-            'tickets' => $event->getTickets()
+            'tickets' => $event->getTickets()->toArray()
         ]);
 
-        $dompdf->loadHtml(($html));
+        $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         
@@ -35,12 +34,12 @@ class EventService extends AbstractController
 
         $output = $dompdf->output();
 
-        file_put_contents($this->getParameter('kernel.project_dir').self::PDF_FOLDER_PATH.$fileName, $output);
+        file_put_contents($this->getParameter('kernel.project_dir').Constants::PDF_FOLDER_PATH.$fileName, $output);
     }
 
     public function getTicketsFile(Event $event): Response
     {
-        $file = new File($this->getParameter('kernel.project_dir').self::PDF_FOLDER_PATH.$this->getFileName($event));
+        $file = new File($this->getParameter('kernel.project_dir').Constants::PDF_FOLDER_PATH.$this->getFileName($event));
 
         $response = new Response(file_get_contents($file->getPathname()), Response::HTTP_OK, ['Content-Type' => $file->getMimeType()]);
         $response->headers->add([
@@ -50,8 +49,15 @@ class EventService extends AbstractController
         return $response;
     }
 
+    public function deleteQrCodes(Event $event): void
+    {
+        foreach ($event->getTickets() as $ticket) {
+            unlink($this->getParameter('kernel.project_dir').Constants::QRCODES_FOLDER_PATH.$ticket->getQrCode());
+        }
+    }
+
     public function getFileName(Event $event): string
     {
-        return 'Imeet_'.$event->getId().'.pdf';
+        return sprintf('Imeet_%d.pdf', $event->getId());
     }
 }

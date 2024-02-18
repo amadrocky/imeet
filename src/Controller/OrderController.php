@@ -9,6 +9,7 @@ use App\Entity\Product;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\AddressFormType;
+use App\Helpers\Constants;
 use App\Message\Tickets;
 use App\Repository\AddressRepository;
 use App\Repository\ProductRepository;
@@ -170,7 +171,7 @@ class OrderController extends AbstractController
 
             $this->createTickets($order, $product, $orderQuantity, $event);
 
-            $bus->dispatch(new Tickets($event));
+            $bus->dispatch(new Tickets($event->getId()));
         }
 
         return $this->render('order/success.html.twig', [
@@ -216,7 +217,7 @@ class OrderController extends AbstractController
         $order->setEvent($event);
         $order->setQuantity($quantity);
         $order->setTotal($product->getPrice() * $quantity);
-        $order->setState('paid'); // Put it in const
+        $order->setState(Constants::ORDER_STATE_PAID);
         $this->globalService->persistAndFlush($order);
 
         return $order;
@@ -238,7 +239,7 @@ class OrderController extends AbstractController
             $ticket->setBill($order);
             $ticket->setEvent($event);
             $ticket->setNumber($number);
-            $ticket->setState('active');
+            $ticket->setState(Constants::TICKET_STATE_ACTIVE);
 
             $this->entityManager->persist($ticket);
         }
@@ -256,7 +257,7 @@ class OrderController extends AbstractController
 
         $result = $writer->write($qrCode);
 
-        $result->saveToFile('/app/public/qrCodes/'. $qrCodeName);
+        $result->saveToFile($this->getParameter('kernel.project_dir').Constants::QRCODES_FOLDER_PATH. $qrCodeName);
 
         return $qrCodeName;
     }
