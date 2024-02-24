@@ -80,3 +80,20 @@ tr, td {
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
     background-color: rgba(220, 53, 69, .3);
 }
+
+input:not([type="submit"]):not([type="checkbox"]) {
+    line-height: 30px;
+    background-color: rgba(255, 255, 255, 1);
+    border-color: rgba(229, 229, 229, 1);
+    border-width: 1px;
+    padding-top: 8px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    border: 1px solid #efefef;
+    border-radius: 0;
+    outline: 0;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    width: 100%;
+}
