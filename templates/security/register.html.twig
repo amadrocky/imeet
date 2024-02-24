@@ -18,8 +18,8 @@
 						{{ form_widget(registrationForm.email) }}
 						{{ form_widget(registrationForm.password) }}
 						<div class="mb-3">
-							{# checkbox #}
-							<small>J'ai lu et j'accepte les <a href="">conditions générales d'utilisation</a>.</small>
+							<input type="checkbox" id="cgv" name="cgv" required>
+							<label for="cgv">J'ai lu et j'accepte les <a href="">conditions générales d'utilisation</a>.</label>
 						</div>
 
 						<input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
