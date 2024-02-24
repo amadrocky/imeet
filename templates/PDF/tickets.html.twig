@@ -62,13 +62,15 @@
                     <p class="date">{{ event.startDate|date('d/m/Y') }}</p>
                     <p class="number">{{ ticket.number }}</p>
                 </td>
-                {% if ticket.qrCode %}
-                    <td>
-                        <div class="text-end">
+                <td>
+                    <div class="text-end">
+                        {% if ticket.qrCode %}
                             <img src="https://imeet.lndo.site/qrCodes/{{ ticket.qrCode }}" class="qr-code">
-                        </div>
-                    </td>
-                {% endif %}
+                        {% else %}
+                            <img src="https://imeet.lndo.site/build/logos/imeet.png" class="qr-code">
+                        {% endif %}
+                    </div>
+                </td>
             </tr>
         </table>
         <div class="text-center">
