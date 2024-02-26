@@ -11,6 +11,7 @@
     padding: 30px;
     border-radius: 0 0 50% 0;
     text-align: center;
+
     span {
         font-family: 'Anton', sans-serif;
         font-size: 2vw;
@@ -22,6 +23,7 @@
     text-align: center;
     font-family: 'Anton', sans-serif;
     font-size: 5vw;
+
     sup {
         font-size: 2vw;
     }
@@ -29,8 +31,10 @@
 
 .product-details {
     font-family: 'Quicksand', sans-serif;
+
     li {
         list-style-type: none;
+
         i {
             font-size: 10px;
         }
@@ -46,36 +50,58 @@
 
 .product-offer {
     padding: 50px 0;
+
     .product-block {
         border: 1px solid $red;
         padding: 30px;
+
         .product-block-left {
             text-align: center;
+
             h2 {
                 border-bottom: 1px solid $red;
             }
+
             p {
                 font-family: 'Quicksand', sans-serif;
             }
+
+            .product-description {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 30vh;
+            }
         }
+
         .product-block-right {
             text-align: center;
+
             h5 {
                 font-family: 'Anton', sans-serif;
                 font-size: 5vw;
             }
-            ul {
-                padding: 20px;
+
+            .product-compositions {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 20vh;
+
+                li {
+                    list-style-type: none;
+                    font-size: 20px;
+                    font-family: 'Quicksand', sans-serif;
+                }
             }
-            li {
-                list-style-type: none;
-                font-size: 20px;
-                font-family: 'Quicksand', sans-serif;
-            }
+
             .product-price {
                 font-family: 'Anton', sans-serif;
                 font-size: 7vw;
                 margin-bottom: 20px;
+
                 sup {
                     font-size: 3vw;
                 }

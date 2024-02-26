@@ -3,20 +3,24 @@
     <h3>
       {{ product.title }}
     </h3>
-    <p>
-      {{ product.description }}
-    </p>
+    <div class="product-description">
+      <p>
+        {{ product.description }}
+      </p>
+    </div>
   </div>
   <div class="product-block-right">
     <h5>
       {{ product.name }}
     </h5>
-    <ul>
-      <li>{{ product.quantity }} tickets</li>
-      {% for composition in product.compositions %}
-        <li>{{ composition.name }}</li>
-      {% endfor %}
-    </ul>
+    <div class="product-compositions">
+      <ul>
+        <li>{{ product.quantity }} tickets</li>
+        {% for composition in product.compositions %}
+          <li>{{ composition.name }}</li>
+        {% endfor %}
+      </ul>
+    </div>
     <h6 class="product-price">
       {{ (product.price / 100)|round(0, 'floor') }}<sup>€{{ product.price|slice(-2) }}</sup>
     </h6>
