@@ -3,6 +3,7 @@
     background-image: url(../../static/images/music-7238254_1280.jpg);
     background-size: cover;
     position: relative;
+
     .scroller {
         position: absolute;
         top: 50vh;
@@ -13,7 +14,8 @@
         overflow: hidden;
         width: 50em;
     }
-    .scroller > span {
+
+    .scroller>span {
         font-family: 'Quicksand', sans-serif;
         font-size: 5vw;
         color: white;
@@ -41,40 +43,42 @@
 }
 
 .landing-prevew {
-    &_one {
-        .image-zone {
-            background-image: url(../../static/images/people-2589091_1280.jpg);
-            background-size: cover;
-            height: 500px;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+
+    img {
+        width: 80%;
+        height: auto;
+        display: block;
+        margin: auto;
+        box-shadow: 0 7px 7px grey;
     }
-    &_two {
-        .image-zone {
-            background-image: url(../../static/images/cupcakes-380178_1280.jpg);
-            background-size: cover;
-            height: 500px;
-        }
-    }
-    &_three {
-        .image-zone {
-            background-image: url(../../static/images/coffee-break-1177540_1280.jpg);
-            background-size: cover;
-            height: 500px;
-        }
-    }
+}
+
+.landing-choose {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
 }
 
 @keyframes slide {
     0% {
-      top: 0;
+        top: 0;
     }
+
     25% {
-      top: -2em;
+        top: -2em;
     }
+
     50% {
-      top: -3.8em;
+        top: -3.8em;
     }
+
     75% {
-      top: -5.6em;
+        top: -5.6em;
     }
 }
