@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\RegistrationFormType;
+use App\Helpers\Constants;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    public function __construct(
+        private readonly MailerService $mailer
+    ) {
+    }
+
     #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
@@ -47,9 +54,16 @@ class SecurityController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
+            
+            $this->mailer->sendBrevoEmail(
+                $user->getEmail(),
+                Constants::WELCOME_EMAIL_TEMPLATE,
+                [
+                    'PRENOM' => $user->getFirstname()
+                ]
+            );
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/register.html.twig', [
