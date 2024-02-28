@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use Exception;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
@@ -18,6 +17,7 @@ class MailerService
         $email = (new Email())
             ->from('contact@imeet.fr')
             ->to($to)
+            ->text('Welcome!')
         ;
 
         $email
@@ -26,10 +26,6 @@ class MailerService
             ->addParameterizedHeader('params', 'params', $params)
         ;
 
-        try {
-            $this->mailer->send($email);
-        } catch (Exception $e) {
-            echo 'Exception when sending Email: ', $e->getMessage(), PHP_EOL;
-        }
+        $this->mailer->send($email);
     }
 }

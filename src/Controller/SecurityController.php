@@ -54,13 +54,11 @@ class SecurityController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            
+
             $this->mailer->sendBrevoEmail(
                 $user->getEmail(),
                 Constants::WELCOME_EMAIL_TEMPLATE,
-                [
-                    'PRENOM' => $user->getFirstname()
-                ]
+                ['PRENOM' => $user->getFirstname()]
             );
 
             return $this->redirectToRoute('app_login');
