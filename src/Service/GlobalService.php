@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class GlobalService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 

@@ -11,10 +11,10 @@ use Doctrine\ORM\EntityManagerInterface;
 class UserService
 {
     public function __construct(
-        private AddressRepository $addressRepository,
-        private EntityManagerInterface $entityManager,
-        private UserRepository $userRepository,
-        private GlobalService $globalService
+        private readonly AddressRepository $addressRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository,
+        private readonly GlobalService $globalService
     ) {
     }
 

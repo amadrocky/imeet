@@ -18,10 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private AddressRepository $addressRepository,
-        private OrderRepository $orderRepository,
-        private EventRepository $eventRepository,
-        private UserService $userService
+        private readonly AddressRepository $addressRepository,
+        private readonly OrderRepository $orderRepository,
+        private readonly EventRepository $eventRepository,
+        private readonly UserService $userService
     ) {
     }
 

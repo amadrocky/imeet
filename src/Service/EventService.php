@@ -3,18 +3,26 @@
 namespace App\Service;
 
 use App\Entity\Event;
+use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helpers\Constants;
+use App\Repository\TicketRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class EventService extends AbstractController
 {
+    public function __construct(
+        private readonly TicketRepository $ticketRepository
+    ) {
+    }
+
     public function exportTickets(Event $event): void
     {
         $pdfOptions = new Options();
@@ -58,7 +66,7 @@ class EventService extends AbstractController
         }
     }
 
-    public function getFileName(Event $event): string
+    private function getFileName(Event $event): string
     {
         return sprintf('Imeet_%d.pdf', $event->getId());
     }
@@ -69,4 +77,32 @@ class EventService extends AbstractController
             throw new Exception('The actual user doesn\'t own this event.');
         }
     }
+
+    public function checkTicket(Event $event, string $url): JsonResponse
+    {
+        $ticket = $this->getTicketFromUrl($url);
+        
+        if (!is_null($ticket) && $event->getTickets()->contains($ticket)) {
+            // Mettre à jour status du ticket
+            $lastScan = $ticket->getUpdatedAt()->format('d/m/Y - H:i');
+
+            return new JsonResponse(
+                [
+                    'message' => "Ticket validé (dernier scan: {$lastScan})"
+                ],
+                Response::HTTP_OK
+           );
+        }
+
+        return new JsonResponse([], Response::HTTP_NOT_FOUND);
+    }
+
+    private function getTicketFromUrl(string $url): Ticket|null
+    {
+        $dataUrl = explode('/', $url);
+        $ticketNumber = array_pop($dataUrl);
+
+        return $this->ticketRepository->findOneBy(['number' => $ticketNumber]);
+    }
+
 }

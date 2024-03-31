@@ -34,13 +34,13 @@ class OrderController extends AbstractController
     private const STRIPE_API_KEY = 'stripe_api_key';
 
     public function __construct(
-        private ProductRepository $productRepository,
-        private AddressRepository $addressRepository,
-        private EntityManagerInterface $entityManager,
-        private UserRepository $userRepository,
-        private UserService $userService,
-        private GlobalService $globalService,
-        private EventService $eventService
+        private readonly ProductRepository $productRepository,
+        private readonly AddressRepository $addressRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository,
+        private readonly UserService $userService,
+        private readonly GlobalService $globalService,
+        private readonly EventService $eventService
     ) {
     }
 

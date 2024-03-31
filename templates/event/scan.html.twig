@@ -7,8 +7,11 @@
 {% block body %}
   <div class="order-product container">
     <div class="order-recap">
-        <h4>{{ event.name|capitalize }}</h4>
-      <div {{ vue_component('ScanPage') }}></div>
+      <h4>{{ event.name|capitalize }}</h4>
+      <div {{ vue_component('ScanPage', {'checkUrl': path('app_event_scan_ticket', {'id': event.id})}) }}></div>
+      <div class="text-center">
+        <button class="btn btn-outline-danger btn-sm" onclick="window.history.back()"><i class="fas fa-chevron-left"></i> Retour aux événements</button>
+      </div>
     </div>
   </div>
 {% endblock %}

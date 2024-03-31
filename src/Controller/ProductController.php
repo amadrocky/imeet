@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     public function __construct(
-        private ProductRepository $productRepository
+        private readonly ProductRepository $productRepository
     ) {
     }
 
