@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-  {{ form_start(form, {'attr': {'action': path('app_order_confirm', {'slug': product.slug}), 'method': 'GET', 'class': 'order-product container'}}) }}
+  {{ form_start(form, {'attr': {'action': path('app_order_confirm', {'slug': product.slug}), 'method': 'POST', 'class': 'order-product container'}}) }}
     {% include './elements/stepper.html.twig' with {step: 2} %}
     <div class="order-recap">
       <div class="row">

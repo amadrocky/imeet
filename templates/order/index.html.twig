@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <form action="{{ path('app_order_address', {'slug': product.slug}) }}" method="get" class="text-end">
+    <form action="{{ path('app_order_address', {'slug': product.slug}) }}" method="post" class="text-end">
       <input type="hidden" id="formQuantity" name="formQuantity" value="1" />
       <input type="submit" class="btn btn-outline-danger btn-lg" value="Étape suivante" />
     </form>

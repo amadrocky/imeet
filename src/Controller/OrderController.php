@@ -58,7 +58,7 @@ class OrderController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
-        $formQuantity = $request->query->get('formQuantity');
+        $formQuantity = $request->request->get('formQuantity');
         $orderTotal = ($product->getPrice() * $formQuantity) / 100;
 
         $form = $this->createForm(AddressFormType::class);
