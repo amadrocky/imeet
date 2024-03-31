@@ -11,6 +11,7 @@ class Constants
     public const ORDER_STATE_PAID = 'paid';
 
     public const TICKET_STATE_ACTIVE = 'active';
+    public const TICKET_STATE_SCANNED = 'scanned';
 
     public const WELCOME_EMAIL_TEMPLATE = 15;
 }

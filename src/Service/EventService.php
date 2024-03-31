@@ -7,9 +7,11 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helpers\Constants;
 use App\Repository\TicketRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Exception;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +21,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class EventService extends AbstractController
 {
     public function __construct(
-        private readonly TicketRepository $ticketRepository
+        private readonly TicketRepository $ticketRepository,
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 
@@ -83,8 +86,9 @@ class EventService extends AbstractController
         $ticket = $this->getTicketFromUrl($url);
         
         if (!is_null($ticket) && $event->getTickets()->contains($ticket)) {
-            // Mettre à jour status du ticket
-            $lastScan = $ticket->getUpdatedAt()->format('d/m/Y - H:i');
+            $this->setScannedState($ticket);
+
+            $lastScan = $ticket->getUpdatedAt()->format('d/m/Y - H:i:s');
 
             return new JsonResponse(
                 [
@@ -103,6 +107,14 @@ class EventService extends AbstractController
         $ticketNumber = array_pop($dataUrl);
 
         return $this->ticketRepository->findOneBy(['number' => $ticketNumber]);
+    }
+
+    private function setScannedState(Ticket $ticket): void
+    {
+        if ($ticket->getState() != Constants::TICKET_STATE_SCANNED) {
+            $ticket->setState(Constants::TICKET_STATE_SCANNED);
+            $this->entityManager->flush();
+        }
     }
 
 }
