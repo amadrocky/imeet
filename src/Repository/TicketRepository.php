@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Event;
 use App\Entity\Ticket;
+use App\Helpers\Constants;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,28 +23,19 @@ class TicketRepository extends ServiceEntityRepository
         parent::__construct($registry, Ticket::class);
     }
 
-//    /**
-//     * @return Ticket[] Returns an array of Ticket objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getScannedTickets(Event $event): int
+    {
+        $qb = $this->createQueryBuilder('o')
+           ->andWhere('o.event = :event')
+           ->andWhere('o.state = :scannedState')
+           ->setParameters([
+                'event' => $event,
+                'scannedState' => Constants::TICKET_STATE_SCANNED
+            ])
+       ;
 
-//    public function findOneBySomeField($value): ?Ticket
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+       $qb->select('count(o.id)');
+
+       return $qb->getQuery()->getSingleScalarResult();
+    }
 }

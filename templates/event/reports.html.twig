@@ -1,0 +1,53 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Tiiix | {{ event.name|capitalize }}
+{% endblock %}
+
+{% block body %}
+  <div class="order-product container">
+    <div class="order-recap">
+        <div class="d-flex">
+            <div class="w-50">
+                <h4>{{ event.name|capitalize }}</h4>
+            </div>
+            <div class="text-end w-50">
+                <button class="btn btn-outline-danger btn-sm" onclick="window.history.back()">
+                    <i class="fas fa-chevron-left"></i> Retour aux événements
+                </button>
+            </div>
+        </div>
+      <div class="numbers">
+        <span class="value" count="{{ scannedTickets }}">0</span>
+        <h6>Tickets scannés</h6>
+        <p><span class="value" count="{{ percentage }}">0</span> %</p>
+      </div>
+      <div>
+        {{ render_chart(scannedTicketsChart) }}
+      </div>
+    </div>
+  </div>
+
+  <script>
+        const counters = document.querySelectorAll('.value');
+        const speed = 250;
+
+        counters.forEach(counter => {
+            const animate = () => {
+                const value = +counter.getAttribute('count');
+                const data = +counter.innerText;
+            
+                const time = value / speed;
+
+                if (data < value) {
+                    counter.innerText = Math.ceil(data + time);
+                setTimeout(animate, 1);
+                } else {
+                    counter.innerText = value;
+                }
+            }
+            
+            animate();
+        });
+  </script>
+{% endblock %}

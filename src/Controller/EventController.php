@@ -43,4 +43,17 @@ class EventController extends AbstractController
 
         return $this->eventService->checkTicket($event, $url);
     }
+
+    #[Route('/event/{id}/reports', name: '_reports')]
+    public function reports(Event $event): Response
+    {
+        $this->eventService->isOwner($this->getUser(), $event);
+
+        return $this->render('event/reports.html.twig', [
+            'event' => $event,
+            'scannedTickets' => $this->eventService->getScannedTickets($event),
+            'percentage' => $this->eventService->getPercentageOfTicketsScanned($event),
+            'scannedTicketsChart' => $this->eventService->getScannedTicketsChart($event)
+        ]);
+    }
 }

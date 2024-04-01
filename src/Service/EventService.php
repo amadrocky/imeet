@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helpers\Constants;
+use App\Repository\EventRepository;
 use App\Repository\TicketRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -16,12 +17,15 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class EventService extends AbstractController
 {
     public function __construct(
         private readonly TicketRepository $ticketRepository,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ChartBuilderInterface $chartBuilder,
     ) {
     }
 
@@ -114,6 +118,45 @@ class EventService extends AbstractController
             $ticket->setState(Constants::TICKET_STATE_SCANNED);
             $this->entityManager->flush();
         }
+    }
+
+    public function getScannedTickets(Event $event): int
+    {
+        return $this->ticketRepository->getScannedTickets($event);
+    }
+
+    public function getPercentageOfTicketsScanned(Event $event): int
+    {
+        return round(($this->ticketRepository->getScannedTickets($event) / count($event->getTickets()->toArray())) * 100);
+    }
+
+    public function getScannedTicketsChart(Event $event): Chart
+    {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
+
+        $scannedTickets = $this->getScannedTickets($event);
+        $ticketsLeft = count($event->getTickets()->toArray()) - $scannedTickets;
+    
+
+        $chart->setData([
+            'labels' => ['Tickets scannés', 'Tickets restants'],
+            'datasets' => [
+                [
+                    'label' => 'Total',
+                    'backgroundColor' => [
+                        'rgba(220, 53, 69, .8)',
+                        'rgb(10, 28, 60)'
+                    ],
+                    'data' => [$scannedTickets, $ticketsLeft],
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'responsive' => true
+        ]);
+
+        return $chart;
     }
 
 }
