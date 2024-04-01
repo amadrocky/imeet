@@ -53,7 +53,9 @@ class EventController extends AbstractController
             'event' => $event,
             'scannedTickets' => $this->eventService->getScannedTickets($event),
             'percentage' => $this->eventService->getPercentageOfTicketsScanned($event),
-            'scannedTicketsChart' => $this->eventService->getScannedTicketsChart($event)
+            'scannedTicketsChart' => $this->eventService->getScannedTicketsChart($event),
+            'scannedTicketsByHoursChart' => $this->eventService->getScannedTicketsByHoursChart($event),
+            'rushHour' => $this->eventService->getRushHour($event)
         ]);
     }
 }

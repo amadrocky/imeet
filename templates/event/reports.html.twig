@@ -21,9 +21,16 @@
         <span class="value" count="{{ scannedTickets }}">0</span>
         <h6>Tickets scannés</h6>
         <p><span class="value" count="{{ percentage }}">0</span> %</p>
+        <span class="value" count="{{ rushHour }}">0</span>
+        <h6>Rush hour</h6>
       </div>
-      <div>
-        {{ render_chart(scannedTicketsChart) }}
+      <div class="row">
+        <div class="col-12 col-md-4">
+          {{ render_chart(scannedTicketsChart) }}
+        </div>
+        <div class="col-12 col-md-8">
+          {{ render_chart(scannedTicketsByHoursChart) }}
+        </div>
       </div>
     </div>
   </div>

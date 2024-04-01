@@ -137,7 +137,6 @@ class EventService extends AbstractController
         $scannedTickets = $this->getScannedTickets($event);
         $ticketsLeft = count($event->getTickets()->toArray()) - $scannedTickets;
     
-
         $chart->setData([
             'labels' => ['Tickets scannés', 'Tickets restants'],
             'datasets' => [
@@ -145,7 +144,7 @@ class EventService extends AbstractController
                     'label' => 'Total',
                     'backgroundColor' => [
                         'rgba(220, 53, 69, .8)',
-                        'rgb(10, 28, 60)'
+                        'rgba(10, 28, 60, .9)'
                     ],
                     'data' => [$scannedTickets, $ticketsLeft],
                 ],
@@ -153,10 +152,91 @@ class EventService extends AbstractController
         ]);
 
         $chart->setOptions([
-            'responsive' => true
+            'responsive' => true,
+            'plugins' => [
+                'title' => [
+                    'display' => true,
+                    'text' => 'Statuts des tickets'
+                ]
+            ]
         ]);
 
         return $chart;
+    }
+
+    public function getScannedTicketsByHoursChart(Event $event): Chart
+    {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+
+        $hours = $this->getScannedCountForHours($event);
+
+        $chart->setData([
+            'labels' => array_keys($hours),
+            'datasets' => [
+                [
+                    'label' => 'Total',
+                    'backgroundColor' => 'rgba(220, 53, 69, .5)',
+                    'data' => array_values($hours),
+                    'borderColor' => 'rgba(220, 53, 69, .5)',
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'responsive' => true,
+            'scales' => [
+                'y' => [
+                    'display' => false
+                ],
+            ],
+            'plugins' => [
+                'title' => [
+                    'display' => true,
+                    'text' => 'Scans par heures'
+                ],
+                'legend' => [
+                    'display' => false
+                ],
+            ]
+        ]);
+
+        return $chart;
+    }
+
+    private function getCountOfScannedTicketsForHour(Event $event, int $hour): int
+    {
+        $tickets = $event->getTickets();
+        $count = 0;
+
+        foreach ($tickets as $ticket) {
+            if ($ticket->getState() == Constants::TICKET_STATE_SCANNED && (int)$ticket->getUpdatedAt()->format('H') == $hour) {
+                $count += 1;
+            }
+        }
+
+        return $count;
+    }
+
+    private function getScannedCountForHours(Event $event): array
+    {
+        $hours = [];
+
+        for ($i = 0; $i < 24; $i++) {
+            $hours[$i] = $this->getCountOfScannedTicketsForHour($event, $i);
+        }
+
+        return $hours;
+    }
+
+    public function getRushHour(Event $event): int
+    {
+        $hours = $this->getScannedCountForHours($event);
+
+        $maxValue = max($hours);
+
+        $keys = array_keys($hours, $maxValue);
+
+        return array_shift($keys);
     }
 
 }
