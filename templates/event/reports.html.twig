@@ -17,12 +17,22 @@
                 </button>
             </div>
         </div>
-      <div class="numbers">
-        <span class="value" count="{{ scannedTickets }}">0</span>
-        <h6>Tickets scannés</h6>
-        <p><span class="value" count="{{ percentage }}">0</span> %</p>
-        <span class="value" count="{{ rushHour }}">0</span>
-        <h6>Rush hour</h6>
+      <div class="numbers row justify-content-around">
+        <div class="col-12 col-md-3 indicator">
+          <p><span class="value" count="{{ scannedTickets }}">0</span></p>
+          <h6><i class="fas fa-qrcode"></i> Tickets scannés</h6>
+        </div>
+        <div class="col-12 col-md-3 indicator">
+          <p><span class="value" count="{{ percentage }}">0</span> %</p>
+          <h6><i class="fas fa-chart-line"></i> Taux de scans</h6>
+        </div>
+        <div class="col-12 col-md-3 indicator">
+          <p><span class="value" count="{{ rushHour }}">0</span> h</p>
+          <h6><i class="fas fa-fire"></i> Rush hour</h6>
+        </div>
+        
+        
+        
       </div>
       <div class="row">
         <div class="col-12 col-md-4">

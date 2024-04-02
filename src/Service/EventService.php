@@ -143,8 +143,8 @@ class EventService extends AbstractController
                 [
                     'label' => 'Total',
                     'backgroundColor' => [
-                        'rgba(220, 53, 69, .8)',
-                        'rgba(10, 28, 60, .9)'
+                        Constants::CHART_RED_COLOR,
+                        Constants::CHART_BLUE_COLOR
                     ],
                     'data' => [$scannedTickets, $ticketsLeft],
                 ],
@@ -175,9 +175,9 @@ class EventService extends AbstractController
             'datasets' => [
                 [
                     'label' => 'Total',
-                    'backgroundColor' => 'rgba(220, 53, 69, .5)',
+                    'backgroundColor' => Constants::CHART_RED_COLOR,
                     'data' => array_values($hours),
-                    'borderColor' => 'rgba(220, 53, 69, .5)',
+                    'borderColor' => Constants::CHART_RED_COLOR
                 ],
             ],
         ]);
