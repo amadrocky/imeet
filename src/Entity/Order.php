@@ -47,6 +47,9 @@ class Order
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
+    #[ORM\OneToOne(mappedBy: 'bill', cascade: ['persist', 'remove'])]
+    private ?OrderAddress $orderAddress = null;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -179,6 +182,23 @@ class Order
     public function setEmail(?string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getOrderAddress(): ?OrderAddress
+    {
+        return $this->orderAddress;
+    }
+
+    public function setOrderAddress(OrderAddress $orderAddress): static
+    {
+        // set the owning side of the relation if necessary
+        if ($orderAddress->getBill() !== $this) {
+            $orderAddress->setBill($this);
+        }
+
+        $this->orderAddress = $orderAddress;
 
         return $this;
     }

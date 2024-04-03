@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Address;
 use App\Entity\Event;
 use App\Entity\Order;
+use App\Entity\OrderAddress;
 use App\Entity\Product;
 use App\Entity\Ticket;
 use App\Entity\User;
@@ -161,6 +162,7 @@ class OrderController extends AbstractController
         $event = null;
 
         if ($stripeSession->payment_status == "paid") {
+            /** @var User $user */
             $user = $this->getUser();
 
             $this->userService->createOrUpdateAddress($user, $datas);
@@ -168,6 +170,8 @@ class OrderController extends AbstractController
             $event = $this->createEvent($datas);
 
             $order = $this->createOrder($product, $event, $orderQuantity, $datas);
+
+            $this->createOrderAddress($order, $user);
 
             $this->createTickets($order, $product, $orderQuantity, $event);
 
@@ -221,6 +225,21 @@ class OrderController extends AbstractController
         $this->globalService->persistAndFlush($order);
 
         return $order;
+    }
+
+    private function createOrderAddress(Order $order, User $user): void
+    {
+        $orderAddress = new OrderAddress();
+
+        $orderAddress->setBill($order);
+        $orderAddress->setStreet($user->getAddress()->getStreet());
+        $orderAddress->setPostcode($user->getAddress()->getPostcode());
+        $orderAddress->setCity($user->getAddress()->getCity());
+        $orderAddress->setCountry($user->getAddress()->getCountry());
+        $orderAddress->setPhoneNumber($user->getAddress()->getPhoneNumber());
+        $orderAddress->setEmail($user->getAddress()->getEmail());
+
+        $this->globalService->persistAndFlush($orderAddress);
     }
 
     private function createTickets(Order $order, Product $product, int $quantity, ?Event $event = null): void
