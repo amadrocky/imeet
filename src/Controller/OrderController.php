@@ -171,7 +171,7 @@ class OrderController extends AbstractController
 
             $order = $this->createOrder($product, $event, $orderQuantity, $datas);
 
-            $this->createOrderAddress($order, $user);
+            $this->createOrderAddress($order);
 
             $this->createTickets($order, $product, $orderQuantity, $event);
 
@@ -227,17 +227,20 @@ class OrderController extends AbstractController
         return $order;
     }
 
-    private function createOrderAddress(Order $order, User $user): void
+    private function createOrderAddress(Order $order): void
     {
         $orderAddress = new OrderAddress();
 
+        /** @var Address $userAddress */
+        $userAddress = $this->addressRepository->findOneBy(['email' => $order->getEmail()]);
+
         $orderAddress->setBill($order);
-        $orderAddress->setStreet($user->getAddress()->getStreet());
-        $orderAddress->setPostcode($user->getAddress()->getPostcode());
-        $orderAddress->setCity($user->getAddress()->getCity());
-        $orderAddress->setCountry($user->getAddress()->getCountry());
-        $orderAddress->setPhoneNumber($user->getAddress()->getPhoneNumber());
-        $orderAddress->setEmail($user->getAddress()->getEmail());
+        $orderAddress->setStreet($userAddress->getStreet());
+        $orderAddress->setPostcode($userAddress->getPostcode());
+        $orderAddress->setCity($userAddress->getCity());
+        $orderAddress->setCountry($userAddress->getCountry());
+        $orderAddress->setPhoneNumber($userAddress->getPhoneNumber());
+        $orderAddress->setEmail($userAddress->getEmail());
 
         $this->globalService->persistAndFlush($orderAddress);
     }
