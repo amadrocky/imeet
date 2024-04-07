@@ -14,6 +14,7 @@ class Constants
     public const TICKET_STATE_SCANNED = 'scanned';
 
     public const WELCOME_EMAIL_TEMPLATE = 15;
+    public const UPGRADE_PASSWORD_EMAIL_TEMPLATE = 16;
 
     public const CHART_RED_COLOR = 'rgba(220, 53, 69, .7)';
     public const CHART_BLUE_COLOR = 'rgba(10, 28, 60, .9)';
