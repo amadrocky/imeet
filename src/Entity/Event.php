@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -159,5 +160,10 @@ class Event
         $tickets = $this->getTickets()->toArray();
         
         return array_shift($tickets)->getBill()->getProduct()->hasReports();
+    }
+
+    public function isOutdated(): bool
+    {
+        return date_modify($this->getStartDate(), '+ 7 days') < new DateTime();
     }
 }

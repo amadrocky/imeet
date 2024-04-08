@@ -16,7 +16,9 @@
                 <td>{{ event.startDate|date('d/m/Y') }}</td>
                 <td>{{ event.tickets|length }}</td>
                 <td class="text-end">
-                    <a href="{{ path('app_event_tickets', {'id': event.id}) }}" class="btn btn-danger btn-sm" target="_blank"><i class="fas fa-download"></i></a>
+                    {% if not event.isOutdated %}
+                        <a href="{{ path('app_event_tickets', {'id': event.id}) }}" class="btn btn-danger btn-sm" target="_blank"><i class="fas fa-download"></i></a>
+                    {% endif %}
                     {% if event.hasETickets %}
                         <a href="{{ path('app_event_scan', {'id': event.id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-qrcode"></i></a>
                         {% if event.hasReports %}
