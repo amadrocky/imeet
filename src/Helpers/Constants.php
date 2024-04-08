@@ -18,4 +18,7 @@ class Constants
 
     public const CHART_RED_COLOR = 'rgba(220, 53, 69, .7)';
     public const CHART_BLUE_COLOR = 'rgba(10, 28, 60, .9)';
+
+    public const E_TICKETS_PRODUCT_NUMBER = 50;
+    public const REPORTS_PRODUCT_NUMBER = 100;
 }

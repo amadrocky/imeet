@@ -1,0 +1,31 @@
+<div class="tab-pane fade show active" id="pills-informations" role="tabpanel" aria-labelledby="pills-informations-tab">
+    {{ form_start(form, {'attr': {'action': path('app_user_dashboard_address_update', {'id': user.id}), 'method': 'POST', 'class': 'order-product container col-8 py-5'}}) }}
+        {{ form_widget(form.email, { 'attr': {'value': user.email, 'disabled': 'disabled'} }) }}
+        <div class="d-flex">
+            <div class="w-50 pe-1">
+            {{ form_widget(form.lastname, { 'attr': {'value': user.lastname} }) }}
+            </div>
+            <div class="w-50 ps-1">
+            {{ form_widget(form.firstname, { 'attr': {'value': user.firstname} }) }}
+            </div>
+        </div>
+        {{ form_widget(form.street, { 'attr': {'value': userAddress ? userAddress.street : ''} }) }}
+        <div class="d-flex">
+            <div class="w-50 pe-1">
+            {{ form_widget(form.postcode, { 'attr': {'value': userAddress ? userAddress.postcode : ''} }) }}
+            </div>
+            <div class="w-50 ps-1">
+            {{ form_widget(form.city, { 'attr': {'value': userAddress ? userAddress.city : ''} }) }}
+            </div>
+        </div>
+        <div class="w-50 pe-1 mb-4">
+            {{ form_widget(form.country, { 'attr': {'value': userAddress ? userAddress.country : ''} }) }}
+        </div>
+        <div class="w-50 ps-1">
+            {{ form_widget(form.phoneNumber, { 'attr': {'value': userAddress ? userAddress.phoneNumber : ''} }) }}
+        </div>
+        <div class="text-end">
+            <input type="submit" class="btn btn-outline-danger btn-sm" value="Modifier mes informations">
+        </div>
+    {{ form_end(form, {render_rest: false}) }}
+</div>

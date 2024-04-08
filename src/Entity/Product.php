@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helpers\Constants;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -242,6 +243,11 @@ class Product
 
     public function hasETickets(): bool
     {
-        return count($this->getCompositions()) > 1;
+        return $this->getQuantity() >= Constants::E_TICKETS_PRODUCT_NUMBER;
+    }
+
+    public function hasReports(): bool
+    {
+        return $this->getQuantity() >= Constants::REPORTS_PRODUCT_NUMBER;
     }
 }

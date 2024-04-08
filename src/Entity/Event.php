@@ -153,4 +153,11 @@ class Event
         
         return array_shift($tickets)->getBill()->getProduct()->hasETickets();
     }
+
+    public function hasReports(): bool
+    {
+        $tickets = $this->getTickets()->toArray();
+        
+        return array_shift($tickets)->getBill()->getProduct()->hasReports();
+    }
 }

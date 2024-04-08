@@ -1,0 +1,32 @@
+<div class="tab-pane fade" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab">
+    {% if orders|length %}
+        <table class="table table-hover mt-5">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Numéro</th>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                <td>{{ order.number|upper }}</td>
+                <td class="order-card-text">{{ order.product.name }}</td>
+                <td>{{ order.quantity }}</td>
+                <td class="order-card-text">{{ order.total|price }} €</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning mt-5" role="alert">
+            <p>Vous n'avez pas de commandes.</p>
+            <hr>
+            <p><a href="{{ path('app_product_index') }}" class="text-decoration-none">Consultez nos offres.</a></p>
+        </div>
+    {% endif %}
+</div>

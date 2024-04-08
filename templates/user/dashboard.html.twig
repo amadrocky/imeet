@@ -27,115 +27,19 @@
       {% endfor %}
       <ul class="nav nav-pills nav-fill">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Mes informations personnelles</button>
+          <button class="nav-link active" id="pills-informations-tab" data-bs-toggle="pill" data-bs-target="#pills-informations" type="button" role="tab" aria-controls="pills-informations" aria-selected="true">Mes informations personnelles</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Mes commandes</button>
+          <button class="nav-link" id="pills-orders-tab" data-bs-toggle="pill" data-bs-target="#pills-orders" type="button" role="tab" aria-controls="pills-orders" aria-selected="false">Mes commandes</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Mes événements</button>
+          <button class="nav-link" id="pills-events-tab" data-bs-toggle="pill" data-bs-target="#pills-events" type="button" role="tab" aria-controls="pills-events" aria-selected="false">Mes événements</button>
         </li>
       </ul>
       <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-          {{ form_start(form, {'attr': {'action': path('app_user_dashboard_address_update', {'id': user.id}), 'method': 'POST', 'class': 'order-product container col-8'}}) }}
-            {{ form_widget(form.email, { 'attr': {'value': user.email, 'disabled': 'disabled'} }) }}
-            <div class="d-flex">
-              <div class="w-50 pe-1">
-                {{ form_widget(form.lastname, { 'attr': {'value': user.lastname} }) }}
-              </div>
-              <div class="w-50 ps-1">
-                {{ form_widget(form.firstname, { 'attr': {'value': user.firstname} }) }}
-              </div>
-            </div>
-            {{ form_widget(form.street, { 'attr': {'value': userAddress ? userAddress.street : ''} }) }}
-            <div class="d-flex">
-              <div class="w-50 pe-1">
-                {{ form_widget(form.postcode, { 'attr': {'value': userAddress ? userAddress.postcode : ''} }) }}
-              </div>
-              <div class="w-50 ps-1">
-                {{ form_widget(form.city, { 'attr': {'value': userAddress ? userAddress.city : ''} }) }}
-              </div>
-            </div>
-            <div class="w-50 pe-1 mb-4">
-              {{ form_widget(form.country, { 'attr': {'value': userAddress ? userAddress.country : ''} }) }}
-            </div>
-            <div class="w-50 ps-1">
-              {{ form_widget(form.phoneNumber, { 'attr': {'value': userAddress ? userAddress.phoneNumber : ''} }) }}
-            </div>
-            <div class="text-end">
-              <input type="submit" class="btn btn-outline-danger btn-sm" value="Modifier mes informations">
-            </div>
-          {{ form_end(form, {render_rest: false}) }}
-        </div>
-        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-          {% if orders|length %}
-            <table class="table table-hover mt-5">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Numéro</th>
-                  <th>Produit</th>
-                  <th>Quantité</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for order in orders %}
-                  <tr>
-                    <td>{{ order.createdAt|date('d/m/Y') }}</td>
-                    <td>{{ order.number|upper }}</td>
-                    <td class="order-card-text">{{ order.product.name }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td class="order-card-text">{{ order.total|price }} €</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          {% else %}
-            <div class="alert alert-warning mt-5" role="alert">
-              <p>Vous n'avez pas de commandes.</p>
-              <hr>
-              <p><a href="{{ path('app_product_index') }}" class="text-decoration-none">Consultez nos offres.</a></p>
-            </div>
-          {% endif %}
-        </div>
-        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-          {% if events|length %}
-            <table class="table table-hover mt-5">
-              <thead>
-                <tr>
-                  <th>Nom de l'évenement</th>
-                  <th>Date</th>
-                  <th>Tickets</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for event in events %}
-                  <tr>
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.createdAt|date('d/m/Y') }}</td>
-                    <td>{{ event.tickets|length }}</td>
-                    <td>
-                      {% if event.hasETickets %}
-                        <a href="{{ path('app_event_scan', {'id': event.id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-qrcode"></i></a>
-                        <a href="{{ path('app_event_reports', {'id': event.id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-chart-bar"></i></a>
-                      {% endif %}
-                      <a href="{{ path('app_event_tickets', {'id': event.id}) }}" class="btn btn-danger btn-sm" target="_blank"><i class="fas fa-download"></i></a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          {% else %}
-            <div class="alert alert-warning mt-5" role="alert">
-              <p>Vous n'avez pas d'événements.</p>
-              <hr>
-              <p><a href="{{ path('app_product_index') }}" class="text-decoration-none">Consultez nos offres.</a></p>
-            </div>
-          {% endif %}
-        </div>
+        {% include('./user/partials/_informations.html.twig') %}
+        {% include('./user/partials/_orders.html.twig') %}
+        {% include('./user/partials/_events.html.twig') %}
       </div>
     </div>
   </div>
