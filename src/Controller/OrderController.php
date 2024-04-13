@@ -17,6 +17,7 @@ use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Service\EventService;
 use App\Service\GlobalService;
+use App\Service\MailerService;
 use App\Service\UserService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,7 +42,8 @@ class OrderController extends AbstractController
         private readonly UserRepository $userRepository,
         private readonly UserService $userService,
         private readonly GlobalService $globalService,
-        private readonly EventService $eventService
+        private readonly EventService $eventService,
+        private readonly MailerService $mailerService
     ) {
     }
 
@@ -176,6 +178,18 @@ class OrderController extends AbstractController
             $this->createTickets($order, $product, $orderQuantity, $event);
 
             $bus->dispatch(new Tickets($event->getId()));
+
+            $this->mailerService->sendBrevoEmail(
+                $user->getEmail(),
+                Constants::ORDER_CONFIRMATION_EMAIL_TEMPLATE,
+                [
+                    'FIRSTNAME' => $user->getFirstname(),
+                    'NUMBER' => strtoupper($order->getNumber()),
+                    'PRODUCT' => $order->getProduct()->getName(),
+                    'QUANTITY' => $order->getQuantity(),
+                    'TOTAL' => $order->getTotal() / 100,
+                ]
+            );
         }
 
         return $this->render('order/success.html.twig', [
