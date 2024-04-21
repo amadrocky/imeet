@@ -97,3 +97,16 @@ input:not([type="submit"]):not([type="checkbox"]) {
     margin-bottom: 20px;
     width: 100%;
 }
+
+html::-webkit-scrollbar {
+    width: 5px;
+}
+
+html::-webkit-scrollbar-thumb {
+    background-color: rgba(220, 53, 69, .8);
+    border-radius: 10px !important;
+}
+
+html::-webkit-scrollbar-track {
+    background-color: whitesmoke;
+}
