@@ -2,7 +2,7 @@
     margin: 0 auto;
     float: none;
     margin-bottom: 10px;
-    border: 1px solid $red;
+    border: 1px solid rgba(220, 53, 69, .5);
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.6);
 }
 
@@ -56,7 +56,7 @@
     padding: 50px 0;
 
     .product-block {
-        border: 1px solid $red;
+        border: 1px solid rgba(220, 53, 69, .5);
         padding: 30px;
 
         .product-block-left {
