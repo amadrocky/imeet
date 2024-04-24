@@ -27,8 +27,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/order', name: 'app_order')]
 class OrderController extends AbstractController
@@ -56,10 +57,8 @@ class OrderController extends AbstractController
     }
 
     #[Route('/{slug}/address', name: '_address')]
-    public function address(Request $request, Product $product): Response
+    public function address(Request $request, Product $product, #[CurrentUser] ?User $user): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
         $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
         $formQuantity = $request->request->get('formQuantity');
         $orderTotal = ($product->getPrice() * $formQuantity) / 100;
@@ -148,7 +147,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/{slug}/payment/success', name: '_payment_success')]
-    public function paymentSuccess(Request $request, Product $product, MessageBusInterface $bus): Response
+    public function paymentSuccess(Request $request, Product $product, MessageBusInterface $bus, #[CurrentUser] ?User $user): Response
     {
         $stripeSessionId = $request->getSession()->get('stripe_session_id');
 
@@ -163,10 +162,7 @@ class OrderController extends AbstractController
         $orderQuantity = intval($request->query->get('quantity'));
         $event = null;
 
-        if ($stripeSession->payment_status == "paid") {
-            /** @var User $user */
-            $user = $this->getUser();
-
+        if (Constants::STRIPE_PAYMENT_STATUS_PAID == $stripeSession->payment_status) {
             $this->userService->createOrUpdateAddress($user, $datas);
 
             $event = $this->createEvent($datas);
@@ -180,10 +176,10 @@ class OrderController extends AbstractController
             $bus->dispatch(new Tickets($event->getId()));
 
             $this->mailerService->sendBrevoEmail(
-                $user->getEmail(),
+                $user ? $user->getEmail() : $order->getEmail(),
                 Constants::ORDER_CONFIRMATION_EMAIL_TEMPLATE,
                 [
-                    'FIRSTNAME' => $user->getFirstname(),
+                    'FIRSTNAME' => $user ? $user->getFirstname() : '',
                     'NUMBER' => strtoupper($order->getNumber()),
                     'PRODUCT' => $order->getProduct()->getName(),
                     'QUANTITY' => $order->getQuantity(),
@@ -257,6 +253,8 @@ class OrderController extends AbstractController
         $orderAddress->setEmail($userAddress->getEmail());
 
         $this->globalService->persistAndFlush($orderAddress);
+
+        return;
     }
 
     private function createTickets(Order $order, Product $product, int $quantity, ?Event $event = null): void
@@ -281,6 +279,8 @@ class OrderController extends AbstractController
         }
 
         $this->entityManager->flush();
+
+        return;
     }
 
     private function createQrCode(string $number): string

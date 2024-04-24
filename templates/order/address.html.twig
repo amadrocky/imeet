@@ -6,7 +6,7 @@
 
 {% block body %}
   {{ form_start(form, {'attr': {'action': path('app_order_confirm', {'slug': product.slug}), 'method': 'POST', 'class': 'order-product container'}}) }}
-    {% include './elements/stepper.html.twig' with {step: 2} %}
+    {% include './elements/_stepper.html.twig' with {step: 2} %}
     <div class="order-recap">
       <div class="row">
         <div class="col-9">

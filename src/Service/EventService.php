@@ -51,6 +51,8 @@ class EventService extends AbstractController
         $output = $dompdf->output();
 
         file_put_contents($this->getParameter('kernel.project_dir').Constants::PDF_FOLDER_PATH.$fileName, $output);
+
+        return;
     }
 
     public function getTicketsFile(Event $event): Response
@@ -70,6 +72,8 @@ class EventService extends AbstractController
         foreach ($event->getTickets() as $ticket) {
             unlink($this->getParameter('kernel.project_dir').Constants::QRCODES_FOLDER_PATH.$ticket->getQrCode());
         }
+
+        return;
     }
 
     private function getFileName(Event $event): string
@@ -82,6 +86,8 @@ class EventService extends AbstractController
         if ($user->getEmail() !== $event->getEmail()) {
             throw new Exception('The actual user doesn\'t own this event.');
         }
+
+        return;
     }
 
     public function checkTicket(Event $event, string $url): JsonResponse
@@ -118,6 +124,8 @@ class EventService extends AbstractController
             $ticket->setState(Constants::TICKET_STATE_SCANNED);
             $this->entityManager->flush();
         }
+
+        return;
     }
 
     public function getScannedTickets(Event $event): int

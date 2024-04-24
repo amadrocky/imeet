@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\User;
 use App\Service\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/app', name: 'app_event')]
 class EventController extends AbstractController
@@ -19,9 +21,9 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}', name: '_scan')]
-    public function index(Event $event): Response
+    public function index(Event $event, #[CurrentUser] ?User $user): Response
     {
-        $this->eventService->isOwner($this->getUser(), $event);
+        $this->eventService->isOwner($user, $event);
 
         return $this->render('event/scan.html.twig', [
             'event' => $event
@@ -29,9 +31,9 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}/tickets', name: '_tickets')]
-    public function downloadTickets(Event $event): Response
+    public function downloadTickets(Event $event, #[CurrentUser] ?User $user): Response
     {
-        $this->eventService->isOwner($this->getUser(), $event);
+        $this->eventService->isOwner($user, $event);
         
         return $this->eventService->getTicketsFile($event);
     }
@@ -45,9 +47,9 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}/reports', name: '_reports')]
-    public function reports(Event $event): Response
+    public function reports(Event $event, #[CurrentUser] ?User $user): Response
     {
-        $this->eventService->isOwner($this->getUser(), $event);
+        $this->eventService->isOwner($user(), $event);
 
         return $this->render('event/reports.html.twig', [
             'event' => $event,

@@ -6,13 +6,13 @@
 
 {% block body %}
   <div class="product-banner"></div>
-  {% include './elements/breadcrumb2Lev.html.twig' with {'lev2Name': 'Nos produits'} %}
+  {% include './elements/_breadcrumb_2_lev.html.twig' with {'lev2Name': 'Nos produits'} %}
   <div class="product-offer">
     <div class="container">
       <div class="row">
         {% for product in products %}
           <div class="col-12 col-md-4">
-            {% include './elements/verticalProduct.html.twig' with {'product': product} %}
+            {% include './elements/_vertical_product.html.twig' with {'product': product} %}
           </div>
         {% endfor %}
       </div>

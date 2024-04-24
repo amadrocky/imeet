@@ -84,7 +84,7 @@
     <div class="row justify-content-center">
       {% for product in products %}
         <div class="col">
-          {% include './elements/productCard.html.twig' with {'product': product} %}
+          {% include './elements/_product_card.html.twig' with {'product': product} %}
         </div>
       {% endfor %}
     </div>

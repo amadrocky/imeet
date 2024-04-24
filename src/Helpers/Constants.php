@@ -22,4 +22,6 @@ class Constants
 
     public const E_TICKETS_PRODUCT_NUMBER = 50;
     public const REPORTS_PRODUCT_NUMBER = 100;
+
+    public const STRIPE_PAYMENT_STATUS_PAID = "paid";
 }

@@ -15,6 +15,8 @@ class GlobalService
     {
         $this->entityManager->persist($object);
         $this->entityManager->flush();
+
+        return;
     }
 
 }

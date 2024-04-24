@@ -6,7 +6,7 @@
 
 {% block body %}
   <div {{ stimulus_controller('order') }} class="order-product container">
-    {% include './elements/stepper.html.twig' with {step: 1} %}
+    {% include './elements/_stepper.html.twig' with {step: 1} %}
     <div class="order-recap">
       <div class="row">
         <div class="col-9">

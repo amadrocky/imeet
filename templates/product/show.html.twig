@@ -6,7 +6,7 @@
 
 {% block body %}
   <div class="product-banner"></div>
-  {% include './elements/breadcrumb3Lev.html.twig' with {'lev2Path': path('app_product_index'), 'lev2Name': 'Nos produits', 'lev3Name': product.name} %}
+  {% include './elements/_breadcrumb_3_lev.html.twig' with {'lev2Path': path('app_product_index'), 'lev2Name': 'Nos produits', 'lev3Name': product.name} %}
   <div class="product-offer">
     <div class="container">
       <div class="product-block row">

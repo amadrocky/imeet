@@ -12,7 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/user', name: 'app_user')]
 class UserController extends AbstractController
@@ -26,11 +27,8 @@ class UserController extends AbstractController
     }
 
     #[Route('/dashboard', name: '_dashboard')]
-    public function index(): Response
+    public function index(#[CurrentUser] ?User $user): Response
     {
-        /** @var User $user  */
-        $user = $this->getUser();
-
         return $this->render('user/dashboard.html.twig', [
             'user' => $user,
             'form' => $this->createForm(AddressFormType::class),
@@ -41,11 +39,8 @@ class UserController extends AbstractController
     }
 
     #[Route('/dashboard/update-address', name: '_dashboard_address_update')]
-    public function updateAddress(Request $request): RedirectResponse
+    public function updateAddress(Request $request, #[CurrentUser] ?User $user): RedirectResponse
     {
-        /** @var User $user  */
-        $user = $this->getUser();
-        
         $datas = $request->request->all('address_form');
         $datas['email'] = $user->getEmail();
 
