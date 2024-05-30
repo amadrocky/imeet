@@ -9,7 +9,7 @@
         top: 50vh;
         left: 50px;
         height: 85px;
-        line-height: 7em;
+        line-height: 7.2em;
         position: relative;
         overflow: hidden;
         width: 50vw;
@@ -43,10 +43,10 @@
 }
 
 .landing-prevew {
-    display: flex;
     justify-content: center;
     align-items: center;
     height: 65vh;
+    padding: 0 30px;
 
     img {
         width: 80%;
