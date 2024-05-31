@@ -2,12 +2,11 @@
 
 namespace App\Form\Extensions;
 
-use App\Form\AddressFormType;
+use App\Form\Type\AddressFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Date;
 
 class EventTypeExtension extends AbstractTypeExtension
 {
