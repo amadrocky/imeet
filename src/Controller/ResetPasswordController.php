@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\ChangePasswordFormType;
-use App\Form\ResetPasswordRequestFormType;
+use App\Form\Type\ChangePasswordFormType;
+use App\Form\Type\ResetPasswordRequestFormType;
 use App\Helpers\Constants;
 use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
