@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\Type\AddressFormType;
+use App\Form\AddressFormType;
 use App\Repository\AddressRepository;
 use App\Repository\EventRepository;
 use App\Repository\OrderRepository;

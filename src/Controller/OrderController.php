@@ -9,7 +9,7 @@ use App\Entity\OrderAddress;
 use App\Entity\Product;
 use App\Entity\Ticket;
 use App\Entity\User;
-use App\Form\Type\AddressFormType;
+use App\Form\AddressFormType;
 use App\Helpers\Constants;
 use App\Message\Tickets;
 use App\Repository\AddressRepository;
