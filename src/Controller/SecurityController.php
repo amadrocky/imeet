@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Type\LoginFormType;
 use App\Form\Type\RegistrationFormType;
 use App\Helpers\Constants;
 use App\Service\MailerService;
@@ -30,9 +31,12 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $form = $this->createForm(LoginFormType::class);
+
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error
+            'error' => $error,
+            'form' => $form
         ]);
     }
 
