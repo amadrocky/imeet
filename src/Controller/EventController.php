@@ -49,7 +49,7 @@ class EventController extends AbstractController
     #[Route('/event/{id}/reports', name: '_reports')]
     public function reports(Event $event, #[CurrentUser] ?User $user): Response
     {
-        $this->eventService->isOwner($user(), $event);
+        $this->eventService->isOwner($user, $event);
 
         return $this->render('event/reports.html.twig', [
             'event' => $event,
