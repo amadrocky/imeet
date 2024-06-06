@@ -1,5 +1,5 @@
 .footer {
-    padding: 100px 60px;
+    padding: 100px 60px 30px 60px;
     background-color: #000;
 
     .footer-logo {
@@ -24,6 +24,14 @@
         text-decoration: none;
         :hover {
             color: white;
+        }
+    }
+
+    .social-icons {
+        text-align: center;
+        svg {
+            height: 30px;
+            width: auto;
         }
     }
 }

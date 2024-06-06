@@ -5,7 +5,7 @@
       <img src="{{ asset('build/logos/imeet.png') }}" alt="image" />
     </div>
   </div>
-  <div class="row">
+  <div class="row mb-5">
     <div class="col-12">
       <h3>
         Tiiix
@@ -24,7 +24,12 @@
       <a href="">Mentions légales</a>
     </div>
     <div class="col-12 col-md footer-link">
-      <a href="">Nous contacter</a>
+      <a href="{{ path('app_contact') }}">Nous contacter</a>
     </div>
+  </div>
+  <div class="social-icons">
+    {{ ux_icon('ic:baseline-facebook') }}
+    {{ ux_icon('mdi:instagram') }}
+    {{ ux_icon('mdi:linkedin') }}
   </div>
 </div>

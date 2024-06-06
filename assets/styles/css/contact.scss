@@ -1,0 +1,37 @@
+.contact {
+    padding: 50px 0;
+
+    .contact-block {
+        margin-bottom: 50px;
+
+        a {
+            color: black;
+            text-decoration: none;
+            font-size: 30px;
+
+            &:hover {
+                color: $red;
+            }
+        }
+    }
+
+    h2 {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    hr {
+        color: rgba(220, 53, 69, .8);
+        margin-bottom: 60px;
+    }
+
+    em {
+        font-family: 'Anton', sans-serif;
+        font-style: normal;
+    }
+
+    svg {
+        height: 70px;
+        width: auto;
+    }
+}

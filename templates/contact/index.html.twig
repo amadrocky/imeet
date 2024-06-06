@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Tiiix | Nous contacter
+{% endblock %}
+
+{% block body %}
+  <div class="product-banner"></div>
+  <div class="container contact">
+    <div class="contact-block">
+        <h2>Contactez-nous</h2>
+        <p>Nous sommes là pour vous aider ! Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter à l'adresse suivante : <a href="mailto:contact@tiiix.fr">contact@tiiix.fr</a>.</p>
+    </div>
+    <div class="contact-block">
+        <h2>Suivez-nous</h2>
+        <p>Restez à jour avec nos dernières nouvelles et offres spéciales en nous suivant sur les réseaux sociaux.</p>
+        <div class="row text-center">
+            <div class="col">{{ ux_icon('ic:baseline-facebook') }}</div>
+            <div class="col">{{ ux_icon('mdi:instagram') }}</div>
+            <div class="col">{{ ux_icon('mdi:linkedin') }}</div>
+        </div>
+    </div>
+    <hr />
+    <p>Nous espérons pouvoir vous aider rapidement et efficacement. Merci de choisir <em>Tiiix</em> pour vos besoins en billetterie !</p>
+  </div>
+{% endblock %}
