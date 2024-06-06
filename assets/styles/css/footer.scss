@@ -17,6 +17,15 @@
         font-size: 3vw;
         color: white;
     }
+
+    .footer-link, a {
+        text-align: center;
+        color: lightgray;
+        text-decoration: none;
+        :hover {
+            color: white;
+        }
+    }
 }
 
 .pre-footer-container {
