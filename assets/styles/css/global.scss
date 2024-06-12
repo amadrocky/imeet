@@ -102,6 +102,10 @@ input:not([type="submit"]):not([type="checkbox"]) {
     width: 100%;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 html::-webkit-scrollbar {
     width: 5px;
 }
