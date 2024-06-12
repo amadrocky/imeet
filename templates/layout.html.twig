@@ -5,6 +5,9 @@
 		<div class="container-fluid">
 			<img src="{{ asset('build/logos/imeet.png') }}" class="nav-logo" alt="image"/>
 			<a class="navbar-brand" href="{{ path('app_home') }}">Tiiix</a>
+				{% if test_mode %}
+					<div class="test-mode">Mode test</div>
+				{% endif %}
 			<div class="collapse navbar-collapse">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">

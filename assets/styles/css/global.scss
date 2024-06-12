@@ -114,3 +114,24 @@ html::-webkit-scrollbar-thumb {
 html::-webkit-scrollbar-track {
     background-color: whitesmoke;
 }
+
+.test-mode {
+    color: #eb34a4;
+    padding: 10px 30px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    animation: flashes 2s infinite;
+}
+
+@keyframes flashes {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
