@@ -92,3 +92,79 @@
         top: -5.6em;
     }
 }
+
+@media screen and (max-width: 667px) {
+    .landing-top {
+        height: 30vh;
+
+        .scroller {
+            position: absolute;
+            top: 150px;
+            left: 30px;
+            height: 35px;
+            line-height: 53px;
+            overflow: hidden;
+            width: 90vw;
+        }
+    
+        .scroller>span {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 30px;
+            color: white;
+            position: absolute;
+            top: 0;
+            animation: slide 6s infinite;
+            font-weight: bold;
+        }
+    }
+
+    .choose-btn {
+        margin-bottom: 30px;
+    }
+
+    .landing-intro-img {
+        max-height: 350px;
+        width: auto;
+    }
+
+    .landing-prevew {
+        .image-zone {
+            align-items: center;
+
+            img {
+                width: 70vw;
+                margin-bottom: 30px;
+            }
+        }
+    }
+
+    #price-section {
+        padding: 50px 0;
+
+        .card {
+            margin-bottom: 30px;
+
+            .card-top {
+                span {
+                    font-size: 30px;
+                }
+            }
+
+            .card-title {
+                font-size: 40px;
+
+                sup {
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+
+    .fixed-background {
+        height: 200px;
+    }
+
+    .landing-tips {
+        padding: 30px 0;
+    }
+}

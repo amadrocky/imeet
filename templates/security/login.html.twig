@@ -30,8 +30,8 @@
 
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                            <button type="submit" class="btn btn-danger">Connexion</button>
-                            <a href="{{ path('app_register') }}" class="btn btn-outline-danger">Pas encore inscrit ? Créer mon compte</a>
+                            <button type="submit" class="btn btn-danger mb-3">Connexion</button>
+                            <a href="{{ path('app_register') }}" class="btn btn-outline-danger mb-3">Pas encore inscrit ? Créer mon compte</a>
                             <div class="mt-3">
                                 <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-none">Mot de passe oublié ?</a>
                             </div>

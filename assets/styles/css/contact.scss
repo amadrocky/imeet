@@ -35,3 +35,18 @@
         width: auto;
     }
 }
+
+@media screen and (max-width: 667px) {
+    .contact {
+        padding: 50px 20px;
+
+        .row {
+            display: flex;
+        }
+
+        svg {
+            height: 50px;
+            width: auto;
+        }
+    }
+}

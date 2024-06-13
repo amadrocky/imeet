@@ -139,3 +139,24 @@ html::-webkit-scrollbar-track {
       opacity: 1;
     }
   }
+
+  @media screen and (max-width: 667px) {
+    h1 {
+        font-size: 50px;
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .row {
+        display: inline;
+    }
+  }

@@ -68,10 +68,50 @@
             font-size: 2vw;
         }
     }
+
+    .order-form {
+        text-align: right;
+    }
 }
+
+
 
 .address-form {
     input {
         margin: 10px 0;
+    }
+}
+
+@media screen and (max-width: 667px) {
+    .steps {
+        margin: 25px 10px;
+    }
+
+    .order-product {
+        padding: 100px 20px;
+        .order-recap {
+            padding: 30px 20px;
+
+            h4 {
+                font-size: 30px;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            .order-price > p {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .order-form {
+        padding-right: 20px;
+        padding-left: 20px;
+
+        .submit {
+            margin-bottom: 30px;
+        }
     }
 }

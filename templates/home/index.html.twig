@@ -7,95 +7,97 @@
 {% block body %}
   <div class="landing-top">
     <div class="scroller">
-        <span>
-          Concerts<br/>
-          Anniversaires<br/>
-          Activités professionnelles<br/>
-          Événements sportifs
-        </span>
+      <span>
+        Concerts<br/>
+        Anniversaires<br/>
+        Activités professionnelles<br/>
+        Événements sportifs
+      </span>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="landing-intro my-5">
+      <h1>
+        take control
+      </h1>
+      <div class="row justify-content-around">
+        <div class="col-12 col-md-5 text-center d-flex justify-content-center align-items-center">
+          <div>
+            <h2>
+              La gestion de billets pour tous types d'événements
+            </h2>
+            <p class="mb-4">
+              Que vous organisiez des concerts, des conférences, des spectacles sportifs ou tout autre événement, notre application vous offre les outils nécessaires pour garantir une expérience sans faille à vos participants.
+            </p>
+            <a href="#price-section" class="btn btn-outline-danger choose-btn">Je choisis ma formule</a>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 text-center">
+          <img src="{{ asset('build/images/b73e62da299075cc73f9c02dc081804a.png' ) }}" class="landing-intro-img" alt="image" />
+        </div>
       </div>
     </div>
-  <div class="landing-intro my-5">
-    <h1>
-      take control
-    </h1>
-    <div class="row justify-content-around">
-      <div class="col-12 col-md-5 text-center d-flex justify-content-center align-items-center">
+    <div class="row landing-prevew">
+      <div class="col-12 col-md-6 image-zone">
+        <img src="{{ asset('build/images/people-2589091_1280.jpg' ) }}" alt="image" />
+      </div>
+      <div class="col-12 col-md-6 text-zone text-center d-flex justify-content-center align-items-center">
         <div>
-          <h2>
-            La gestion de billets pour tous types d'événements
-          </h2>
-          <p class="mb-4">
-            Que vous organisiez des concerts, des conférences, des spectacles sportifs ou tout autre événement, notre application vous offre les outils nécessaires pour garantir une expérience sans faille à vos participants.
+          <h3>Gestion des participants</h3>
+          <p>
+            Suivez facilement les inscriptions, gérez les informations des participants et communiquez avec eux pour garantir une expérience optimale avant, pendant et après l'événement.
           </p>
-          <a href="#price-section" class="btn btn-outline-danger">Je choisis ma formule</a>
         </div>
       </div>
-      <div class="col-12 col-md-4 text-center">
-        <img src="{{ asset('build/images/b73e62da299075cc73f9c02dc081804a.png' ) }}" class="landing-intro-img" alt="image" />
-      </div>
     </div>
-  </div>
-  <div class="row landing-prevew">
-    <div class="col-6 image-zone">
-      <img src="{{ asset('build/images/people-2589091_1280.jpg' ) }}" alt="image" />
-    </div>
-    <div class="col-6 text-zone text-center d-flex justify-content-center align-items-center">
-      <div>
-        <h3>Gestion des participants</h3>
-        <p>
-          Suivez facilement les inscriptions, gérez les informations des participants et communiquez avec eux pour garantir une expérience optimale avant, pendant et après l'événement.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="row landing-prevew">
-    <div class="col-6 text-zone text-center d-flex justify-content-center align-items-center">
-      <div>
-        <h3>Analyse et rapports</h3>
-        <p>
-          Accédez à des données en temps réel sur les billets, suivez les tendances, générez des rapports détaillés et tirez des insights pour optimiser vos stratégies de vente.
-        </p>
-      </div>
-    </div>
-    <div class="col-6 image-zone">
-      <img src="{{ asset('build/images/cupcakes-380178_1280.jpg' ) }}" alt="image" />
-    </div>
-  </div>
-  <div class="row landing-prevew">
-    <div class="col-6 image-zone">
-      <img src="{{ asset('build/images/coffee-break-1177540_1280.jpg' ) }}" alt="image" />
-    </div>
-    <div class="col-6 text-zone d-flex justify-content-center align-items-center">
-      <div>
-        <h3>Avantages</h3>
-        <ul>
-          <li><p><b>Facilité d'utilisation : </b>Interface intuitive pour une navigation aisée.</p></li>
-          <li><p><b>Flexibilité : </b>Adaptable à tout type d'événement et de taille.</p></li>
-          <li><p><b>Sécurité : </b>Protocoles de sécurité avancés pour des transactions sûres.</p></li>
-          <li><p><b>Support client : </b>Une équipe dédiée pour répondre à vos besoins.</p></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div id="price-section" class="landing-products">
-    <h2>Nos formules</h2>
-    <div class="row justify-content-center">
-      {% for product in products %}
-        <div class="col">
-          {% include './elements/_product_card.html.twig' with {'product': product} %}
+    <div class="row landing-prevew">
+      <div class="col-12 col-md-6 text-zone text-center d-flex justify-content-center align-items-center">
+        <div>
+          <h3>Analyse et rapports</h3>
+          <p>
+            Accédez à des données en temps réel sur les billets, suivez les tendances, générez des rapports détaillés et tirez des insights pour optimiser vos stratégies de vente.
+          </p>
         </div>
-      {% endfor %}
+      </div>
+      <div class="col-12 col-md-6 image-zone">
+        <img src="{{ asset('build/images/cupcakes-380178_1280.jpg' ) }}" alt="image" />
+      </div>
+    </div>
+    <div class="row landing-prevew">
+      <div class="col-12 col-md-6 image-zone">
+        <img src="{{ asset('build/images/coffee-break-1177540_1280.jpg' ) }}" alt="image" />
+      </div>
+      <div class="col-12 col-md-6 text-zone d-flex justify-content-center align-items-center">
+        <div>
+          <h3>Avantages</h3>
+          <ul>
+            <li><p><b>Facilité d'utilisation : </b>Interface intuitive pour une navigation aisée.</p></li>
+            <li><p><b>Flexibilité : </b>Adaptable à tout type d'événement et de taille.</p></li>
+            <li><p><b>Sécurité : </b>Protocoles de sécurité avancés pour des transactions sûres.</p></li>
+            <li><p><b>Support client : </b>Une équipe dédiée pour répondre à vos besoins.</p></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="price-section" class="landing-products">
+      <h2>Nos formules</h2>
+      <div class="row justify-content-center">
+        {% for product in products %}
+          <div class="col">
+            {% include './elements/_product_card.html.twig' with {'product': product} %}
+          </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
   <div class="fixed-background"></div>
   <div class="landing-tips">
     <div class="container row justify-content-around align-items-center">
-      <div class="col-4 text-center">
+      <div class="col-12 col-md-4 text-center">
         <i class="far fa-lightbulb"></i>
         <h3>Une petite astuce ?</h3>
       </div>
-      <div class="col-6">
+      <div class="col-12 col-md-6">
         <p>Préventes, espace VIP, multi-événements, notre solution peut également être l'outil complémentaire pour votre événement.</p>
         <p>L'organisation et la gestion sont souvent accompagnées d'imprévus.</p>
         <p><b>Un besoin de dernière minute ?</b></p>

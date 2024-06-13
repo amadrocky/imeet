@@ -118,3 +118,40 @@
         }
     }
 }
+
+@media screen and (max-width: 667px) {
+    .product-offer {
+        padding: 10px 0;
+
+        .product-block {
+            border: none;
+            padding: 10px 0;
+            margin-bottom: 30px;
+
+            .product-block-left {
+                h3 {
+                    min-height: auto;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .product-block-right {
+                h5 {
+                    font-size: 40px;
+                }
+
+                .product-compositions {
+                    height: auto;
+                }
+
+                .product-price {
+                    font-size: 40px;
+    
+                    sup {
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+    }
+}

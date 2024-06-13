@@ -55,3 +55,36 @@
         }
     }
 }
+
+@media screen and (max-width: 667px) {
+    .pre-footer-container {
+        .pre-footer {
+            padding: 50px 0 20px 0;
+            display: flex;
+            margin-left: 2px;
+
+            h5 {
+                font-size: 20px;
+            }
+
+            svg {
+                height: 40px;
+                margin-bottom: 15px;
+            }
+        }
+    }
+
+    .footer {
+        padding: 50px 30px 15px 30px;
+
+        .footer-logo > img {
+            width: 40px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+    }
+}
