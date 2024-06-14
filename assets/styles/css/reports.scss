@@ -22,3 +22,26 @@
         }
     }
 }
+
+@media screen and (max-width: 667px) {
+    .reports {
+        .row {
+            display: inline !important;
+        }
+    }
+
+    .numbers {
+        .indicator {
+            margin-bottom: 20px;
+
+            p {
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+
+            h6 {
+                font-size: 20px;
+            }
+        } 
+    }
+}

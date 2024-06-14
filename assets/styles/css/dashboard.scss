@@ -1,0 +1,18 @@
+@media screen and (max-width: 667px) {
+    .dashboard {
+        .tab-content {
+            form {
+                margin: 0;
+            }
+        }
+
+        th, tr {
+            font-size: 10px;
+        }
+
+        td > .btn {
+            font-size: 8px;
+            padding: 10px 15px;
+        }
+    }
+}
