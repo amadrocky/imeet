@@ -6,7 +6,6 @@ use App\Entity\Event;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helpers\Constants;
-use App\Repository\EventRepository;
 use App\Repository\TicketRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
