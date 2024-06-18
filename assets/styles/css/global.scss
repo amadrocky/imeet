@@ -128,6 +128,10 @@ html::-webkit-scrollbar-track {
     animation: flashes 2s infinite;
 }
 
+li::marker {
+    color: $red;
+}
+
 @keyframes flashes {
     0% {
       opacity: 1;
