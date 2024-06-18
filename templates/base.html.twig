@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html>
+    {% set metaTitle = "Tiiix | Take control !" %}
+    {% set metaDescription = "Que vous organisiez des concerts, des conférences, des spectacles sportifs ou tout autre événement, notre application vous offre les outils nécessaires pour garantir une expérience sans faille à vos participants." %}
+    {% set metaImageLink = "https://tiiix.fr/build/logos/imeet.png" %}
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="{{ asset('build/logos/imeet.png') }}"/>
+
+        <meta name="description" content="La gestion de billets pour tous types d'événements. {{ metaDescription }}" />
+
+        <!-- Meta facebook, linkedin, ... -->
+        <meta property="og:image" content="{{ metaImageLink }}"/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:description" content="{{ metaDescription }}"/>
+        <meta property="og:locale" content="fr_FR"/>
+        <meta property="og:title" content="{{ metaTitle }}"/>
+
+        <!-- Schema.org meta for Google+ -->
+        <meta itemprop="name" content="{{ metaTitle }}" />
+        <meta itemprop="description" content="{{ metaDescription }}" />
+        <meta itemprop="image" content="{{ metaImageLink }}" />
+
+        <!-- Twitter summary card with large image must be at least 280x150px -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@tiiix" />
+        <meta name="twitter:creator" content="@tiiix" />
+        <meta name="twitter:title" content="{{ metaTitle }}" />
+        <meta name="twitter:description" content="{{ metaDescription }}" />
+        <meta name="twitter:image" content="{{ metaImageLink }}" />
 
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
