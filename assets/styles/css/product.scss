@@ -124,7 +124,6 @@
         padding: 10px 0;
 
         .product-block {
-            border: none;
             padding: 15px;
             margin-bottom: 30px;
             border: 1px solid rgba(220, 53, 69, .5);
@@ -146,13 +145,17 @@
                 }
 
                 .product-price {
-                    font-size: 40px;
+                    font-size: 60px;
     
                     sup {
                         font-size: 15px;
                     }
                 }
             }
+        }
+
+        .product-show {
+            border: none;
         }
     }
 }
