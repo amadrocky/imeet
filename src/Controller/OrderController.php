@@ -56,7 +56,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/address', name: '_address')]
+    #[Route('/{slug}/address', name: '_address', methods: ['POST'])]
     public function address(Request $request, Product $product, #[CurrentUser] ?User $user): Response
     {
         $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
@@ -75,7 +75,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/confirm', name: '_confirm')]
+    #[Route('/{slug}/confirm', name: '_confirm', methods: ['POST'])]
     public function confirm(Request $request, Product $product): Response
     {
         $datas = $request->request->all();
