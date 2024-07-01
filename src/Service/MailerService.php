@@ -15,7 +15,7 @@ class MailerService
     public function sendBrevoEmail(string $to, int $templateId, array $params): void
     {
         $email = (new Email())
-            ->from('contact@imeet.fr')
+            ->from('contact@tiiix.fr')
             ->to($to)
             ->text('Welcome!')
         ;

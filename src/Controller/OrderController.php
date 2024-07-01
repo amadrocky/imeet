@@ -113,7 +113,7 @@ class OrderController extends AbstractController
                         'unit_amount' => $product->getPrice(),
                         'product_data' => [
                             'name' => $product->getName(),
-                            'images' => ["https://imeet.lndo.site.fr/build/logos/imeet.png"],
+                            'images' => ["https://tiiix.lndo.site.fr/build/logos/tiiix.png"],
                         ],
                     ],
                     'quantity' => $orderQuantity,
@@ -287,7 +287,7 @@ class OrderController extends AbstractController
     {
         $writer = new PngWriter();
 
-        $qrCode = new QrCode('https://www.imeet.fr/app/qr/' . $number);
+        $qrCode = new QrCode('https://www.tiiix.fr/app/qr/' . $number);
 
         $qrCodeName = $number . '.png';
 

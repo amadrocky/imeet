@@ -1,4 +1,4 @@
-name: imeet
+name: tiiix
 excludes:
     - var
     - node_modules
@@ -12,7 +12,7 @@ config:
 
 proxy:
     mailpit:
-        - mailpit.imeet.lndo.site:8025
+        - mailpit.tiiix.lndo.site:8025
 services:
     appserver:
         xdebug: true
@@ -25,7 +25,7 @@ services:
         creds:
             user: amad
             password: amad
-            database: imeet
+            database: tiiix
     node:
         type: node
         build:

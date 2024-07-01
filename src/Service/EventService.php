@@ -77,7 +77,7 @@ class EventService extends AbstractController
 
     private function getFileName(Event $event): string
     {
-        return sprintf('Imeet_%d.pdf', $event->getId());
+        return sprintf('Tiiix_%d.pdf', $event->getId());
     }
 
     public function isOwner(User $user, Event $event): void

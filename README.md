@@ -18,6 +18,6 @@ Please also verify you meet the requirements needed to run our Docker engine bac
 ## Containers URLS
 Once the project is started, you have many available endpoints.
 
-APPSERVER NGINX : `http://imeet.lndo.site/`  
-PHPMYADMIN : `http://localhost:32918`  
-MAILHOG : `http://mailhog.imeet.lndo.site/` 
+APPSERVER NGINX : `http://tiiix.lndo.site/`  
+PHPMYADMIN : `http://localhost:32777`  
+MAILHOG : `http://mailhog.tiiix.lndo.site/` 
