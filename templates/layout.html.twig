@@ -1,36 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block header %}
-	<nav class="navbar navbar-light bg-light navbar-expand-lg fixed-top">
-		<div class="container-fluid">
-			<img src="{{ asset('build/logos/tiiix.png') }}" class="nav-logo" alt="image"/>
-			<a class="navbar-brand" href="{{ path('app_home') }}">Tiiix</a>
+	<nav class="navbar">
+		<div class="nav-logo">
+			<a href="{{ path('app_home') }}"><img src="{{ asset('build/logos/tiiix.png') }}" class="nav-logo" alt="image"/> Tiiix</a>
+		</div>
+		<div class="nav-links">
 			{% if test_mode %}
 				<div class="test-mode">Mode test</div>
 			{% endif %}
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div id="navbarNav" class="collapse navbar-collapse">
-				<ul class="navbar-nav ms-auto">
-					<li class="nav-item">
-						<a class="btn btn-outline-danger" aria-current="page" href="{{ path('app_product_index') }}">
-							Nos produits
-						</a>
-					</li>
-					<li class="nav-item">
-						{% if app.user %}
-							<a class="btn btn-danger" href="{{ path('app_user_dashboard') }}">
-								{{ app.user.fullName }}
-							</a>
-						{% else %}
-							<a class="btn btn-danger" href="{{ path('app_login') }}">
-								Se connecter
-							</a>
-						{% endif %}
-					</li>
-				</ul>
-			</div>
+		</div>
+		<div class="nav-cta">
+			<a href="{{ path('app_product_index') }}" class="nav-cta-products">Nos produits</a>
+			{% if app.user %}
+				<a href="{{ path('app_user_dashboard') }}" class="nav-cta-button">{{ app.user.firstname|capitalize }}</a>
+			{% else %}
+				<a href="{{ path('app_login') }}" class="nav-cta-button">Se connecter</a>
+			{% endif %}
 		</div>
 	</nav>
 
@@ -41,9 +27,9 @@
 			let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
 			if (currentScroll > lastScrollTop) {
-				document.querySelector(".navbar").classList.add("hidden");
+				document.querySelector(".navbar").classList.add("d-none");
 			} else {
-				document.querySelector(".navbar").classList.remove("hidden");
+				document.querySelector(".navbar").classList.remove("d-none");
 			}
 			lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Pour éviter un comportement étrange sur certains navigateurs
 		}, false);
