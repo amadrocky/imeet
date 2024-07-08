@@ -23,7 +23,14 @@
             initCamera() {
             const video = this.$refs.video;
 
-            navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+            // To use back cam
+            const constraints = {
+                video: {
+                    facingMode: { exact: "environment" }
+                }
+            };
+
+            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
                 video.srcObject = stream;
                 video.play();
             }).catch(err => console.error('Failed to initialize camera:', err));
