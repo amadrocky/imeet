@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="icon" href="https://www.tiiix.fr/logos/tiiix.png"/>
+	<link rel="icon" href="../../public/logos/tiiix.png"/>
 
 	<style type="text/css">
 
@@ -51,7 +51,7 @@
 
 {% block body %}
     <div class="text-center">
-	    <img class="photo" src="https://www.tiiix.fr/logos/tiiix.png" alt="image-titre">
+	    <img class="photo" src="../../public/logos/tiiix.png" alt="image-titre">
     </div>
     {% for ticket in tickets %}
         <div class="top-line"></div>
@@ -65,9 +65,9 @@
                 <td>
                     <div class="text-end">
                         {% if ticket.qrCode %}
-                            <img src="https://www.tiiix.fr/qrCodes/{{ ticket.qrCode }}" class="qr-code">
+                            <img src="../../public/qrCodes/{{ ticket.qrCode }}" class="qr-code">
                         {% else %}
-                            <img src="https://www.tiiix.fr/logos/tiiix.png" class="qr-code">
+                            <img src="../../public/logos/tiiix.png" class="qr-code">
                         {% endif %}
                     </div>
                 </td>
