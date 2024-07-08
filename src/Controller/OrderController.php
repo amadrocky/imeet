@@ -275,6 +275,8 @@ class OrderController extends AbstractController
             $ticket->setNumber($number);
             $ticket->setState(Constants::TICKET_STATE_ACTIVE);
 
+            $event->addTicket($ticket);
+
             $this->entityManager->persist($ticket);
         }
 
