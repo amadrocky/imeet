@@ -113,7 +113,7 @@ class OrderController extends AbstractController
                         'unit_amount' => $product->getPrice(),
                         'product_data' => [
                             'name' => $product->getName(),
-                            'images' => ["https://tiiix.lndo.site.fr/build/logos/tiiix.png"],
+                            'images' => ["https://tiiix.lndo.site.fr/logos/tiiix.png"],
                         ],
                     ],
                     'quantity' => $orderQuantity,
