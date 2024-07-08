@@ -26,7 +26,7 @@
             // To use back cam
             const constraints = {
                 video: {
-                    facingMode: { exact: "environment" }
+                    facingMode: 'environment'
                 }
             };
 
