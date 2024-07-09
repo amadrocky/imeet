@@ -23,10 +23,17 @@
             initCamera() {
             const video = this.$refs.video;
 
+            const rearCameraId = this.getRearCamera();
+
+            if (!rearCameraId) {
+                console.error('No rear camera found');
+                return;
+            }
+
             // To use back cam
             const constraints = {
                 video: {
-                    facingMode: 'environment'
+                    deviceId: { exact: rearCameraId }
                 }
             };
 
@@ -80,6 +87,17 @@
                         text: false
                     });
                 }
+            },
+            async getRearCamera() {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                let rearCamera = videoDevices.find(device => device.label.toLowerCase().includes('back'));
+                
+                if (!rearCamera && videoDevices.length > 1) {
+                    rearCamera = videoDevices[1]; // Assume the second device is the rear camera
+                }
+                
+                return rearCamera ? rearCamera.deviceId : null;
             }
         }
     };
