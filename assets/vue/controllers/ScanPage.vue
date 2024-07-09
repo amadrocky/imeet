@@ -21,26 +21,29 @@
         },
         methods: {
             initCamera() {
-            const video = this.$refs.video;
+                const video = this.$refs.video;
 
-            const rearCameraId = this.getRearCamera();
+                const rearCameraId = this.getRearCamera();
 
-            if (!rearCameraId) {
-                console.error('No rear camera found');
-                return;
-            }
-
-            // To use back cam
-            const constraints = {
-                video: {
-                    deviceId: { exact: rearCameraId }
+                if (!rearCameraId) {
+                    console.error('No rear camera found');
+                    return;
                 }
-            };
 
-            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-                video.srcObject = stream;
-                video.play();
-            }).catch(err => console.error('Failed to initialize camera:', err));
+                const constraints = {
+                    video: {
+                        deviceId: rearCameraId ? { exact: rearCameraId } : undefined,
+                        facingMode: { ideal: "environment" }
+                    }
+                };
+
+                try {
+                    const stream = navigator.mediaDevices.getUserMedia(constraints);
+                    video.srcObject = stream;
+                    video.play();
+                } catch (err) {
+                    console.error('Failed to initialize camera:', err.name, err.message);
+                }
             },
             initVideo() {
                 const video = this.$refs.video;
@@ -89,15 +92,20 @@
                 }
             },
             async getRearCamera() {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const videoDevices = devices.filter(device => device.kind === 'videoinput');
-                let rearCamera = videoDevices.find(device => device.label.toLowerCase().includes('back'));
-                
-                if (!rearCamera && videoDevices.length > 1) {
-                    rearCamera = videoDevices[1]; // Assume the second device is the rear camera
+                try {
+                    const devices = await navigator.mediaDevices.enumerateDevices();
+                    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                    let rearCamera = videoDevices.find(device => device.label.toLowerCase().includes('back'));
+                    
+                    if (!rearCamera && videoDevices.length > 1) {
+                        rearCamera = videoDevices[1]; // Assume the second device is the rear camera
+                    }
+                    
+                    return rearCamera ? rearCamera.deviceId : null;
+                } catch (err) {
+                    console.error('Error enumerating devices:', err);
+                    return null;
                 }
-                
-                return rearCamera ? rearCamera.deviceId : null;
             }
         }
     };
