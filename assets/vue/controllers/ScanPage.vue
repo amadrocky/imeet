@@ -23,7 +23,7 @@
             async initCamera() {
                 const video = this.$refs.video;
 
-                const rearCameraId = await getRearCamera();
+                const rearCameraId = await this.getRearCamera();
 
                 if (!rearCameraId) {
                     console.error('No rear camera found');
