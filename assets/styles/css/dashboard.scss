@@ -6,13 +6,21 @@
             }
         }
 
-        th, tr {
+        th {
             font-size: 10px;
+        }
+        
+        tr {
+            font-size: 9px;
         }
 
         td > .btn {
-            font-size: 8px;
-            padding: 10px 15px;
+            font-size: 9px;
+            padding: 5px 8px;
+        }
+
+        li {
+            width: 100%;
         }
     }
 }
