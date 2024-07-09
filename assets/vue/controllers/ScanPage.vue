@@ -20,10 +20,10 @@
             }
         },
         methods: {
-            initCamera() {
+            async initCamera() {
                 const video = this.$refs.video;
 
-                const rearCameraId = this.getRearCamera();
+                const rearCameraId = await getRearCamera();
 
                 if (!rearCameraId) {
                     console.error('No rear camera found');
@@ -38,9 +38,14 @@
                 };
 
                 try {
-                    const stream = navigator.mediaDevices.getUserMedia(constraints);
-                    video.srcObject = stream;
-                    video.play();
+                    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+                    if (stream && typeof stream === 'object' && stream instanceof MediaStream) {
+                        video.srcObject = stream;
+                        video.play();
+                    } else {
+                        throw new Error('Stream is not a valid MediaStream');
+                    }
                 } catch (err) {
                     console.error('Failed to initialize camera:', err.name, err.message);
                 }
@@ -98,7 +103,7 @@
                     let rearCamera = videoDevices.find(device => device.label.toLowerCase().includes('back'));
                     
                     if (!rearCamera && videoDevices.length > 1) {
-                        rearCamera = videoDevices[1]; // Assume the second device is the rear camera
+                        rearCamera = videoDevices[1];
                     }
                     
                     return rearCamera ? rearCamera.deviceId : null;
