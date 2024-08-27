@@ -62,6 +62,7 @@ class OrderController extends AbstractController
         $userAddress = !is_null($user) ? $this->addressRepository->findOneBy(['email' => $user->getEmail()]) : null;
         $formQuantity = $request->request->get('formQuantity');
         $orderTotal = ($product->getPrice() * $formQuantity) / 100;
+        $orderTotal = number_format($orderTotal, 2);
 
         $form = $this->createForm(AddressFormType::class);
 
@@ -79,11 +80,13 @@ class OrderController extends AbstractController
     public function confirm(Request $request, Product $product): Response
     {
         $datas = $request->request->all();
+        $orderTotal = ($product->getPrice() * $datas['quantity']) / 100;
+        $orderTotal = number_format($orderTotal, 2);
 
         return $this->render('order/confirm.html.twig', [
             'product' => $product,
             'orderQuantity' => $datas['quantity'],
-            'orderTotal' => ($product->getPrice() * $datas['quantity']) / 100,
+            'orderTotal' => $orderTotal,
             'datas' => $datas['address_form']
         ]);
     }
