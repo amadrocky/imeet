@@ -22,38 +22,48 @@
         methods: {
             async initCamera() {
                 try {
-                    // Vérification de support des APIs modernes
+                    // Vérification du support de la caméra
                     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Erreur',
-                            text: 'Votre appareil ou navigateur ne prend pas en charge la capture vidéo.'
+                            text: 'Votre appareil ne prend pas en charge la capture vidéo.'
                         });
                         return;
                     }
 
-                    // Vérifier si les permissions sont accordées
+                    // Vérification des permissions
                     const permissions = await navigator.permissions.query({ name: 'camera' });
                     if (permissions.state !== 'granted') {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Autorisation requise',
+                            title: 'Permission caméra',
                             text: 'Veuillez autoriser l’accès à la caméra pour continuer.'
                         });
                     }
 
-                    // Récupérer l'ID de la caméra arrière
-                    const rearCameraId = await this.getRearCamera();
+                    // Obtenir l'ID de la caméra arrière
+                    let rearCameraId = await this.getRearCamera();
+
+                    if (!rearCameraId) {
+                        console.warn('Aucune caméra arrière détectée. Utilisation de la caméra par défaut.');
+                        const devices = await navigator.mediaDevices.enumerateDevices();
+                        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                        if (videoDevices.length > 0) {
+                            rearCameraId = videoDevices[0].deviceId; // Utilisation du premier appareil disponible
+                        }
+                    }
+
                     if (!rearCameraId) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Erreur caméra',
-                            text: 'Impossible de trouver une caméra arrière.'
+                            text: 'Impossible de trouver une caméra fonctionnelle.'
                         });
                         return;
                     }
 
-                    // Définir les contraintes pour la caméra arrière
+                    // Activer le flux vidéo
                     const constraints = {
                         video: {
                             deviceId: rearCameraId ? { exact: rearCameraId } : undefined,
@@ -61,19 +71,19 @@
                         }
                     };
 
-                    // Activer le flux vidéo
+                    console.log('Contraintes vidéo appliquées :', constraints);
+
                     const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    if (stream && stream instanceof MediaStream) {
-                        const video = this.$refs.video;
-                        video.srcObject = stream;
-                        video.play();
-                    }
+                    const video = this.$refs.video;
+
+                    video.srcObject = stream;
+                    video.play();
                 } catch (err) {
-                    console.error('Erreur lors de l’initialisation de la caméra:', err.message);
+                    console.error('Erreur lors de l’initialisation de la caméra :', err.message);
                     Swal.fire({
                         icon: 'error',
                         title: 'Erreur caméra',
-                        text: 'Impossible d’activer la caméra. Vérifiez vos permissions ou redémarrez votre appareil.'
+                        text: `Impossible d’activer la caméra : ${err.message}`
                     });
                 }
             },
@@ -83,19 +93,37 @@
                     const devices = await navigator.mediaDevices.enumerateDevices();
                     const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
-                    // Tenter de trouver une caméra "arrière"
+                    console.log('Caméras détectées :', videoDevices);
+
                     let rearCamera = videoDevices.find(device =>
                         device.label.toLowerCase().includes('back') ||
                         device.label.toLowerCase().includes('rear')
                     );
 
-                    // Si non trouvée, sélectionner le second appareil ou le premier
                     if (!rearCamera && videoDevices.length > 1) {
+                        console.warn('Caméra arrière non détectée, sélection de la seconde caméra.');
                         rearCamera = videoDevices[1];
                     }
-                    return rearCamera ? rearCamera.deviceId : null;
+
+                    if (!rearCamera) {
+                        console.error('Aucune caméra arrière détectée.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erreur caméra',
+                            text: 'Aucune caméra arrière détectée. Essayez de vérifier les permissions ou de redémarrer votre appareil.'
+                        });
+                        return null;
+                    }
+
+                    console.log('Caméra arrière détectée :', rearCamera);
+                    return rearCamera.deviceId;
                 } catch (err) {
-                    console.error('Erreur lors de la récupération des caméras :', err.message);
+                    console.error('Erreur lors de la détection des caméras :', err.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erreur caméra',
+                        text: 'Une erreur s’est produite lors de la détection des caméras.'
+                    });
                     return null;
                 }
             },
@@ -104,7 +132,6 @@
                 const video = this.$refs.video;
                 const qr = new QrCode();
 
-                // Callback pour le décodage des QR codes
                 qr.callback = (err, value) => {
                     if (err) {
                         console.warn('Erreur de décodage QR:', err.message);
@@ -113,7 +140,6 @@
                     }
                 };
 
-                // Fonction de capture de frame pour le décodage
                 let isDecoding = false;
                 const captureFrame = () => {
                     if (isDecoding) {
@@ -123,7 +149,6 @@
 
                     isDecoding = true;
 
-                    // Création d'un canvas temporaire pour capturer la vidéo
                     const canvas = document.createElement('canvas');
                     canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
@@ -136,10 +161,9 @@
                     try {
                         qr.decode(imageData);
                     } catch (decodeError) {
-                        console.warn('Décodage échoué:', decodeError.message);
+                        console.warn('Décodage échoué :', decodeError.message);
                     }
 
-                    // Pause entre les décodages
                     setTimeout(() => {
                         isDecoding = false;
                     }, 500);
@@ -151,7 +175,6 @@
 
             async handleQRCode(qrCodeData) {
                 try {
-                    // Validation du QR code via API
                     const response = await axios.post(this.checkUrl, { 'url': qrCodeData });
 
                     if (response.status === 200) {
@@ -168,6 +191,7 @@
                         });
                     }
                 } catch (error) {
+                    console.error('Erreur lors de la validation du QR code :', error.message);
                     Swal.fire({
                         icon: 'error',
                         title: 'Erreur',
