@@ -18,6 +18,11 @@
 				<a href="{{ path('app_login') }}" class="nav-cta-button">Se connecter</a>
 			{% endif %}
 		</div>
+	{% if free_mode %}
+		<div class="free-offers-banner w-100">
+			Toutes les offres sont actuellement <strong>gratuites</strong> !
+		</div>
+	{% endif %}
 	</nav>
 
 	<script>

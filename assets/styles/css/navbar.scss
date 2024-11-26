@@ -58,6 +58,19 @@
     }
 }
 
+.free-offers-banner {
+    position: fixed;
+    top: 90px; /* Ajustez selon la hauteur de la navbar */
+    width: 100%;
+    background-color: #ffeb3b;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 20; /* Plus haut que la navbar */
+}
+
 @keyframes slideDown {
     from {
       opacity: 0;
