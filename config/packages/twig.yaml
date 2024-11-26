@@ -3,6 +3,7 @@ twig:
     form_themes: ['bootstrap_5_layout.html.twig']
     globals:
         test_mode: '%env(bool:TEST_MODE)%'
+        free_mode: '%env(bool:FREE_MODE)%'
 
 when@test:
     twig:

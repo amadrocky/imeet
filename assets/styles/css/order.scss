@@ -82,6 +82,12 @@
     }
 }
 
+.free-order {
+    color: $red;
+    text-align: center;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 667px) {
     .steps {
         margin: 25px 10px;

@@ -28,9 +28,12 @@
               <li>{{ composition.name }}</li>
             {% endfor %}
           </ul>
-          <h6 class="product-price">
+          <h6 class="product-price {% if free_mode %}offer-free-price{% endif %}">
             {{ (product.price / 100)|round(0, 'floor') }}<sup>€{{ product.price|slice(-2) }}</sup>
           </h6>
+          {% if free_mode %}
+            <div class="free-price">Gratuit</div>
+          {% endif %}
           <a href="{{ path('app_order_recap', {'slug': product.slug}) }}" class="btn btn-outline-danger btn-lg">Je lance ma commande</a>
         </div>
       </div>

@@ -29,12 +29,21 @@
             </ul>
           </div>
           <div class="col-3 d-flex justify-content-end order-price">
-            <p class="me-2">
-              {{ orderTotal }}
-            </p>
+            {% if free_mode %}
+              <p class="me-2">
+                0.00
+              </p>
+            {% else %}
+              <p class="me-2">
+                {{ orderTotal }}
+              </p>
+            {% endif %}
             <p>€</p>
           </div>
         </div>
+        {% if free_mode %}
+          {% include './order/elements/_free_order_message.html.twig' %}
+        {% endif %}
         <hr/>
         <div class="row address-form">
           <div class="col-12 col-md-6">
@@ -72,7 +81,7 @@
         </div>
       </div>
       <div class="text-end">
-        <form action="{{ path('app_order_payment', {  'slug': product.slug}) }}" method="post">
+        <form action="{{ path('app_order_payment', {'slug': product.slug}) }}" method="post">
           <input type="hidden" id="quantity" name="quantity" value="{{ orderQuantity }}">
           <input type="hidden" id="datas" name="datas" value="{{ datas|json_encode }}">
           <input type="submit" class="btn btn-danger btn-lg" value="Validation et paiement">

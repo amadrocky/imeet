@@ -35,6 +35,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class OrderController extends AbstractController
 {
     private const STRIPE_API_KEY = 'stripe_api_key';
+    private const FREE_MODE = 'free_mode';
 
     public function __construct(
         private readonly ProductRepository $productRepository,
@@ -97,6 +98,15 @@ class OrderController extends AbstractController
         $datas = json_decode($request->request->get('datas'));
         $orderQuantity = intval($request->request->get('quantity'));
         $orderTotal = ($product->getPrice() * $orderQuantity);
+
+        /* FREE ORDER */
+        if ($this->getParameter(self::FREE_MODE)) {
+            return $this->redirectToRoute('app_order_free_order', [
+                'slug' => $product->getSlug(), 
+                'datas' => $datas,
+                'quantity' => $orderQuantity
+            ]);
+        }
 
         if ($orderQuantity > 0) {
             $stripe = new \Stripe\StripeClient($this->getParameter(self::STRIPE_API_KEY));
@@ -198,6 +208,44 @@ class OrderController extends AbstractController
         ]);
     }
 
+    #[Route('/{slug}/payment/free', name: '_free_order')]
+    public function freeOrder(Request $request, Product $product, MessageBusInterface $bus, #[CurrentUser] ?User $user): Response
+    {
+        $datas = $request->query->all('datas');
+        $orderQuantity = intval($request->query->get('quantity'));
+        $event = null;
+
+        $this->userService->createOrUpdateAddress($user, $datas);
+
+        $event = $this->createEvent($datas);
+
+        $order = $this->createOrder($product, $event, $orderQuantity, $datas);
+
+        $this->createOrderAddress($order);
+
+        $this->createTickets($order, $product, $orderQuantity, $event);
+
+        $bus->dispatch(new Tickets($event->getId()));
+
+        $this->mailerService->sendBrevoEmail(
+            $user ? $user->getEmail() : $order->getEmail(),
+            Constants::ORDER_CONFIRMATION_EMAIL_TEMPLATE,
+            [
+                'FIRSTNAME' => $user ? $user->getFirstname() : '',
+                'NUMBER' => strtoupper($order->getNumber()),
+                'PRODUCT' => $order->getProduct()->getName(),
+                'QUANTITY' => $order->getQuantity(),
+                'TOTAL' => 0.00, /* FREE ORDER */
+            ]
+        );
+
+        return $this->render('order/success.html.twig', [
+            'product' => $product,
+            'datas' => $datas,
+            'orderNumber' => $order->getNumber()
+        ]);
+    }
+
     #[Route('/{slug}/payment/error', name: '_payment_error')]
     public function paymentError(Request $request, Product $product): Response
     {
@@ -228,12 +276,15 @@ class OrderController extends AbstractController
     {
         $order = new Order();
 
+        /* FREE ORDER */
+        $orderTotal = $this->getParameter(self::FREE_MODE) ? 000 : $product->getPrice() * $quantity;
+
         $order->setNumber(uniqid());
         $order->setProduct($product);
         $order->setEmail($datas['email']);
         $order->setEvent($event);
         $order->setQuantity($quantity);
-        $order->setTotal($product->getPrice() * $quantity);
+        $order->setTotal($orderTotal);
         $order->setState(Constants::ORDER_STATE_PAID);
         $this->globalService->persistAndFlush($order);
 

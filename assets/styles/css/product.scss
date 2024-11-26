@@ -22,11 +22,39 @@
 .card-title {
     text-align: center;
     font-family: 'Anton', sans-serif;
-    font-size: 5vw;
+    font-size: 60px;
 
     sup {
-        font-size: 2vw;
+        font-size: 30px;
     }
+}
+
+.free-price {
+    text-align: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 60px;
+    color: $red;
+}
+
+.offer-free-price {
+    position: relative;
+    display: inline-block;
+    margin: 0 25%;
+    text-align: center;
+    width: 50%; 
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: $red;
+        transform: rotate(-10deg);
+        transform-origin: center;
+        pointer-events: none;
+      }
 }
 
 .product-details {

@@ -21,12 +21,21 @@
           </ul>
         </div>
         <div class="col-3 d-flex justify-content-end order-price">
-          <p class="me-2">
-            {{ orderTotal }}
-          </p>
+          {% if free_mode %}
+            <p class="me-2">
+              0.00
+            </p>
+          {% else %}
+            <p class="me-2">
+              {{ orderTotal }}
+            </p>
+          {% endif %}
           <p>€</p>
         </div>
       </div>
+      {% if free_mode %}
+        {% include './order/elements/_free_order_message.html.twig' %}
+      {% endif %}
       <input type="hidden" id="quantity" name="quantity" value="{{ orderQuantity }}">
       <hr/>
       <div class="row address-form">

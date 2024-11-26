@@ -44,12 +44,21 @@
           </p>
         </div>
         <div class="col-3 d-flex justify-content-md-end order-price">
-          <p class="me-2" data-order-target="orderTotal">
-            {{ product.price / 100 }}
-          </p>
+          {% if free_mode %}
+            <p class="me-2">
+              0.00
+            </p>
+          {% else %}
+            <p class="me-2" data-order-target="orderTotal">
+              {{ product.price / 100 }}
+            </p>
+          {% endif %}
           <p>€</p>
         </div>
       </div>
+      {% if free_mode %}
+        {% include './order/elements/_free_order_message.html.twig' %}
+      {% endif %}
     </div>
     <form action="{{ path('app_order_address', {'slug': product.slug}) }}" method="post" class="text-end">
       <input type="hidden" id="formQuantity" name="formQuantity" value="1" />
