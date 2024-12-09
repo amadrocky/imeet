@@ -27,15 +27,17 @@
           <p>€</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <div>
-            <span class="minus" data-action="click->order#decrement"><button class="btn btn-danger">-</button></span>
-            <span class="num mx-2" data-order-target="quantity">1</span>
-            <span class="plus" data-action="click->order#increment"><button class="btn btn-danger">+</button></span>
+      {% if not free_mode %}
+        <div class="row">
+          <div class="col-12">
+            <div>
+              <span class="minus" data-action="click->order#decrement"><button class="btn btn-danger">-</button></span>
+              <span class="num mx-2" data-order-target="quantity">1</span>
+              <span class="plus" data-action="click->order#increment"><button class="btn btn-danger">+</button></span>
+            </div>
           </div>
         </div>
-      </div>
+      {% endif %}
       <hr />
       <div class="row">
         <div class="col-9">
